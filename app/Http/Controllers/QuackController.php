@@ -16,7 +16,7 @@ class QuackController extends Controller
     {
         //$quacks = Quack::all();
 //        return view('index', ['quacks' => $quacks]);
-        return view('index');
+        return view('home');
     }
 
     /**
@@ -48,7 +48,7 @@ class QuackController extends Controller
      */
     public function read(Quack $quack)
     {
-        return view('index');
+        return view('home');
     }
 
     /**

@@ -11,16 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/create', 'QuackController@create')->name('create');
-Route::get('/index', 'QuackController@index')->name('index');
-Route::get('/update', 'QuackController@update')->name('update');
-Route::get('/delete', 'QuackController@delete')->name('delete');
-//
-//Route::resource('/quacks', 'QuackController');
+Route::get('/', 'HomeController@index')->name('index');
+Route::get('/index', 'HomeController@index')->name('index');
+Route::get('/home', 'HomeController@home')->name('home');
 
-Auth::routes();
+Auth::routes();                                                             //ensemble des routes de l'authentification
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/quacks', 'QuackController');
+
+Route::get('logout', 'Auth\LoginController@logout'); //à transformer en post
+Route::get('user/myaccount', 'User\UserController@index')->name('user.myaccount');
+Route::get('user/updateaccount', 'User\UserController@updateaccount')->name('user.updateaccount');
+Route::put('user/update', 'User\UserController@update')->name('user.update');
+
+//Route::get('/create', 'QuackController@create')->name('create');
+//Route::get('/index', 'QuackController@index')->name('index');
+//Route::get('/list', 'QuackController@list')->name('list');
+//Route::get('/update', 'QuackController@update')->name('update');
+//Route::get('/delete', 'QuackController@delete')->name('delete');
+
+//Route::post('/modification-mot-de-passe', 'CompteController@modificationMotDePasse');
+
