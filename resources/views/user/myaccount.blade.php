@@ -11,7 +11,7 @@
             <a href="{{route('user.updateaccount')}}"><button class="btn btn-primary">modifier les informations</button></a>
         </div>
     </div>
-    <div class="container border border-dark p-3">
+    <div class="container w-50 border border-dark p-3">
         <div class="row">
             <div class="col-6"><p>Prénom : </p></div>
             <div class="col-6"><b>{{ $user->prenom }}</b></div>

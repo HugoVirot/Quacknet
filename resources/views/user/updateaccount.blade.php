@@ -21,18 +21,18 @@
             <div class="col-4">
             </div>
             <div class="col-4 text-center">
-                <form class="col-12 mx-auto" action="{{ route('update', $user) }}" method="POST">
+                <form class="col-12 mx-auto" action="{{ route('user.update') }}" method="POST">
                     {{--                    <input type="hidden" name="_method" value="PUT">--}}
                     {{--                    <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="prenom">Prénom actuel: <b>{{ $user->prenom }}</b></label>
+                        <label for="prenom">Nouveau prénom</label>
                         <input required type="text" class="form-control" placeholder="modifier" name="prenom"
                                value="{{ $user->prenom }}" id="prenom">
                     </div>
                     <div class="form-group">
-                        <label for="nom">Nom actuel : <b>{{ $user->nom }}</b></label>
+                        <label for="nom">Nouveau nom</label>
                         <input required type="text" class="form-control" name="nom" value="{{ $user->nom }}" id="nom">
                     </div>
                     <div class="form-group">
@@ -45,7 +45,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label class="label">Mot de passe (confirmation)</label>
+                        <label class="label">Confirmez le mot de passe</label>
                         <div class="control">
                             <input class="form-control" type="password" name="password_confirmation">
                         </div>

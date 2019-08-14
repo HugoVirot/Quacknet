@@ -14,7 +14,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->only(['home']);
+        $this->middleware('guest')->only(['index']);
     }
 
     /**
@@ -25,19 +26,11 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (Auth::check()) {
-            return view('home');
-        } else {
-            return view('index');
-        }
+        return view('index');
     }
 
     public function home()
     {
-        if (Auth::check()) {
-            return view('home');
-        } else {
-            return view('index');
-        }
+        return view('home');
     }
 }
