@@ -8,7 +8,7 @@
     <div class="container">
         <div class="container mb-4">
                 <h3>Mes informations </h3>
-            <a href="{{route('user.updateaccount')}}"><button class="btn btn-primary">modifier les informations</button></a>
+            <a href="{{route('user.account.updatepage')}}"><button class="btn btn-primary">modifier les informations</button></a>
         </div>
     </div>
     <div class="container w-50 border border-dark p-3">
@@ -29,13 +29,4 @@
             <div class="col-6"><p>{{ $user->email }}</p></div>
         </div>
     </div>
-    </div>
-
-
-
-
-
-
-
-
 @endsection

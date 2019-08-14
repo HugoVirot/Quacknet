@@ -18,10 +18,9 @@ Auth::routes();                                                             //en
 
 Route::resource('/quacks', 'QuackController');
 
-Route::get('logout', 'Auth\LoginController@logout'); //à transformer en post
-Route::get('user/myaccount', 'User\UserController@index')->name('user.myaccount');
-Route::get('user/updateaccount', 'User\UserController@updateaccount')->name('user.updateaccount');
-Route::put('user/update', 'User\UserController@update')->name('user.update');
+Route::get('user/account', 'User\UserController@index')->name('user.account');
+Route::get('user/account/update', 'User\UserController@updatepage')->name('user.account.updatepage');
+Route::put('user/account/update', 'User\UserController@updatevalidation')->name('user.account.updatevalidation');
 
 //Route::get('/create', 'QuackController@create')->name('create');
 //Route::get('/index', 'QuackController@index')->name('index');

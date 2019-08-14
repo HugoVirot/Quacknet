@@ -21,7 +21,7 @@
             <div class="col-4">
             </div>
             <div class="col-4 text-center">
-                <form class="col-12 mx-auto" action="{{ route('user.update') }}" method="POST">
+                <form class="col-12 mx-auto" action="{{ route('user.account.updatevalidation') }}" method="POST">
                     {{--                    <input type="hidden" name="_method" value="PUT">--}}
                     {{--                    <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
                     @csrf
@@ -51,6 +51,9 @@
                         </div>
                         @if($errors->has('password_confirmation'))
                             <p class="help is-danger">{{ $errors->first('password_confirmation') }}</p>
+                        @endif
+                        @if($errors->has('password_error'))
+                            <p class="help is-danger">{{ $errors->first('password_error') }}</p>
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary">Valider</button>

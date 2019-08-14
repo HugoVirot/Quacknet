@@ -10,35 +10,49 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     public function index()            //affiche page avec les infos du compte
     {
         $user = Auth::user();
 
-        return view('user.myaccount', ['user' => $user]);
+        return view('user.account', ['user' => $user]);
     }
 
-    public function updateaccount()    //affiche formulaire modification infos
+
+    public function updatepage()    //affiche formulaire modification infos
     {
         $user = Auth::user();
 
-        return view('user.updateaccount', ['user' => $user]);
+        return view('user.accountupdatepage', ['user' => $user]);
     }
 
-    public function update(Request $request)
+
+    public function updatevalidation(Request $request)      //permet de valider les modifs
     {
         $validatedData = $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
-            'prenom' => 'required|max:50',
-            'nom' => 'required|max:50',
-            'password' => 'required|min:8|confirmed',
+            'prenom' => 'max:50',
+            'nom' => 'max:50',
+            'password' => '',     //erreur si mdp identique à l'ancien
         ]);
 
         $user = Auth::user();        //on récupère les données de base de l'utilisateur
         $user->prenom = $validatedData['prenom'];         //on insère ainsi les nouvelles données
         $user->nom = $validatedData['nom'];
-        $user->password = Hash::make($validatedData['password']);
-        $user->save();
 
-        return redirect()->route('user.myaccount');
+        if ($validatedData['password'] != null) {                                    //si on a rentré un nouveau mdp
+            $validatedData = $request->validate(['password' => 'min:8|confirmed']);  //on le teste (si pas bon => erreur)
+            $oldpassword = $user['password'];
+            $newpassword = $validatedData['password'];
+
+            if ((Hash::check($newpassword, $oldpassword))) {
+                return redirect()->route('user.account.updatepage')->withErrors(['password_error', 'ancien et nouveau mot de passe identiques !']);
+            } else {
+                $user->password = Hash::make($validatedData['password']);                //si ok, on le sauvegarde en bdd
+            }
+        }
+
+        $user->save();
+        return redirect()->route('user.account');
     }
 }
 
