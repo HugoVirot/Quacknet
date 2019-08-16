@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateQuacksTable extends Migration
 {
+//    public $timestamps = false;
     /**
      * Run the migrations.
      *
@@ -16,7 +17,12 @@ class CreateQuacksTable extends Migration
         Schema::create('quacks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('content');
-            $table->timestamp('created_at');
+            $table->unsignedBigInteger('user_id');
+            $table->string('image');
+            $table->string('tags');
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

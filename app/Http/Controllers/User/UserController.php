@@ -29,29 +29,30 @@ class UserController extends Controller
 
     public function updatevalidation(Request $request)      //permet de valider les modifs
     {
-        $validatedData = $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
+        $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
             'prenom' => 'max:50',
             'nom' => 'max:50',
             'password' => '',     //erreur si mdp identique à l'ancien
         ]);
 
         $user = Auth::user();        //on récupère les données de base de l'utilisateur
-        $user->prenom = $validatedData['prenom'];         //on insère ainsi les nouvelles données
-        $user->nom = $validatedData['nom'];
+        $user->prenom = $request->input('prenom');         //on insère ainsi les nouvelles données
+        $user->nom = $request->input('nom');
 
-        if ($validatedData['password'] != null) {                                    //si on a rentré un nouveau mdp
-            $validatedData = $request->validate(['password' => 'min:8|confirmed']);  //on le teste (si pas bon => erreur)
+        if ($request->input('password') != null) {                                    //si on a rentré un nouveau mdp
+            $request->validate(['password' => 'min:8|confirmed']);  //on le teste (si pas bon => erreur)
             $oldpassword = $user['password'];
-            $newpassword = $validatedData['password'];
+            $newpassword = $request->input('password');
 
             if ((Hash::check($newpassword, $oldpassword))) {
                 return redirect()->route('user.account.updatepage')->withErrors(['password_error', 'ancien et nouveau mot de passe identiques !']);
             } else {
-                $user->password = Hash::make($validatedData['password']);                //si ok, on le sauvegarde en bdd
+                $user->password = Hash::make($newpassword);                //si ok, on le sauvegarde en bdd
             }
         }
 
         $user->save();
+
         return redirect()->route('user.account');
     }
 }

@@ -7,26 +7,51 @@ Accueil
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card pb-3">
-                <div class="card-header">liste des quacks</div>
+        <div class="col-md-10">
 
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
+            <a href="quacks/create">
+                <button class="btn btn-primary mb-3">Poster un quack</button>
+            </a>
+
+            @foreach ($quacks as $quack)
+            @if(session()->has('message'))
+            <p class="alert alert-success">{{ session()->get('message') }}</p>
+            @endif
+            <div class="card mb-2">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-4"><b>{{ $quack->user->duckname }}</b></div>
+                        @if ($quack->created_at != $quack->updated_at)
+                        <div class="col-4"> modifié le {{ $quack->updated_at }}</div>
+                        @else
+                        <div class="col-4"></div>
+                        @endif
+                        <div class="col-4"> posté le {{ $quack->created_at }}</div>
                     </div>
-                    @endif
-                    <form action="/home" method="POST">
-                        <label for="message">Tapez votre message</label>
-                        <textarea required type="text" name="message" id="message"></textarea>
-                        <button type="submit" class="btn btn-primary">Valider</button>
-                    </form>
                 </div>
+                <div class="card-img mt-3">
+                    <!--                        <img src="{{url('/public/images/-->
+                    <?php //echo $quack->image; ?><!--')}}" alt="canard">-->
+                    <img class="w-25" src="/images/canard.jpg" alt="canard">
+                </div>
+                <div class="card-body">
+                    <div>{{ $quack->content }}</div>
+                    <div class="row">
+                        <div class="col-4">{{ $quack->tags }}</div>
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <a href="{{ route('quacks.destroy', $quack->id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                @endforeach
+
             </div>
         </div>
     </div>
 </div>
-
 @endsection
 

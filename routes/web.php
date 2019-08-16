@@ -12,11 +12,11 @@
 */
 
 Route::get('/', 'HomeController@index')->name('index');
-Route::get('/home', 'HomeController@home')->name('home');
+Route::get('/home', 'QuackController@index')->name('home');
 
 Auth::routes();                                                             //ensemble des routes de l'authentification
 
-Route::resource('/quacks', 'QuackController');
+Route::resource('/quacks', 'QuackController')->except('index');
 
 Route::get('user/account', 'User\UserController@index')->name('user.account');
 Route::get('user/account/update', 'User\UserController@updatepage')->name('user.account.updatepage');
