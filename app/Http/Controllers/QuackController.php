@@ -20,7 +20,6 @@ class QuackController extends Controller
     {
         $quacks = Quack::all();
         return view('home', ['quacks' => $quacks]);
-//        return view('home', $quacks);
     }
 
     /**
@@ -57,12 +56,6 @@ class QuackController extends Controller
         $quack->save();
 
         return redirect()->route('home');
-    }
-
-    public function show()
-    {
-        $quacks = Quack::all();
-        return view('home', ['quacks' => $quacks]);
     }
 
     /**
@@ -107,11 +100,10 @@ class QuackController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Quack $quack)
     {
-        DB::delete('delete * from quacks where id = $id');
-//        $quack = Quack::find($id);
-//        $quack->delete();
+
+        $quack->delete();
         return redirect()->route('home')->with('message', 'Le Quack a bien été supprimé');
     }
 }

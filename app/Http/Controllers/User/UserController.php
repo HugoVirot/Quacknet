@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Quack;
 use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -39,12 +41,12 @@ class UserController extends Controller
         $user->prenom = $request->input('prenom');         //on insère ainsi les nouvelles données
         $user->nom = $request->input('nom');
 
-        if ($request->input('password') != null) {                                    //si on a rentré un nouveau mdp
+        if ($request->input('password') !== null) {                                    //si on a rentré un nouveau mdp
             $request->validate(['password' => 'min:8|confirmed']);  //on le teste (si pas bon => erreur)
-            $oldpassword = $user['password'];
+            $oldpassword = $user->password;
             $newpassword = $request->input('password');
 
-            if ((Hash::check($newpassword, $oldpassword))) {
+            if (Hash::check($newpassword, $oldpassword)) {
                 return redirect()->route('user.account.updatepage')->withErrors(['password_error', 'ancien et nouveau mot de passe identiques !']);
             } else {
                 $user->password = Hash::make($newpassword);                //si ok, on le sauvegarde en bdd
@@ -54,6 +56,15 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('user.account');
+    }
+
+    public function profil($id)
+    {
+//        $quacks = DB::table('quacks')->where('user_id', $id);
+//        $user = DB::table('users')->where('id', $id);
+        $quacks = Quack::where('user_id', $id)->get();
+        $user = User::where('id', $id)->get();
+        return view('user/profil', ['quacks' => $quacks, 'user' => $user]);
     }
 }
 

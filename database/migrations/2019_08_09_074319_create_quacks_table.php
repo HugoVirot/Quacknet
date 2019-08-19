@@ -18,8 +18,8 @@ class CreateQuacksTable extends Migration
             $table->bigIncrements('id');
             $table->text('content');
             $table->unsignedBigInteger('user_id');
-            $table->string('image');
-            $table->string('tags');
+            $table->string('image')->nullable();
+            $table->string('tags')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
