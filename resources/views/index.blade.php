@@ -10,7 +10,7 @@
 <div class="pl-5 container w-50 border border-dark p-3">
     <div class="row">
         <div class="pb-3">
-            <h2 class="ml-5">Bienvenue sur Quack !</h2>
+            <h2 class="ml-5">Bienvenue sur QuackNet !</h2>
         </div>
     </div>
     <div class="row">

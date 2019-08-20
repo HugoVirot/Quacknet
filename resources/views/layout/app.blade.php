@@ -10,7 +10,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm mb-5">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/home') }}"><img style="height: 40px; width: 40px;" src="{{ asset("images/duck.png") }}" alt="logo">
-            {{ config('Quack', 'Quack') }}
+            {{ config('QuackNet', 'QuackNet') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

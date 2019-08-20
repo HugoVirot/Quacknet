@@ -37,7 +37,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function quacks(){
+    public function quacks()
+    {
         return $this->hasMany('App\Quacks');
+    }
+
+    public function commentaires()
+    {
+        return $this->hasMany('App\Commentaire');
     }
 }

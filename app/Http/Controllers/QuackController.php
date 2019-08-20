@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Commentaire;
 use App\Quack;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+
 
 class QuackController extends Controller
 {
@@ -18,7 +22,8 @@ class QuackController extends Controller
      */
     public function index()
     {
-        $quacks = Quack::all();
+        $quacks = Quack::with('commentaires.user')->latest()->get();
+
         return view('home', ['quacks' => $quacks]);
     }
 
@@ -64,6 +69,13 @@ class QuackController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
+
+    public function show(Quack $quack)
+    {
+        $quack2 = Quack::where('id', $quack->id)->with('commentaires.user')->latest()->get();
+        return view('quack.show', ['quack' => $quack2]);
+    }
+
     public function read(Quack $quack)
     {
 
@@ -78,7 +90,7 @@ class QuackController extends Controller
      */
     public function edit(Quack $quack)
     {
-        return view('update');
+        return view('home');
     }
 
     /**
@@ -88,9 +100,34 @@ class QuackController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Quack $quack)
+
+    public function update(Quack $quack)
     {
-        return view('update');
+
+        return view('quack.update', ['quack' => $quack]);
+
+    }
+
+    public function updatevalidation(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|min:5',
+            'image' => '',
+            'tags' => '',
+        ]);
+
+        $id = $request->input('id');
+        $quack = Quack::where('id', $id)->get();
+        $quack->content = $request->input('content');
+        if ($request->input('image') !== null) {
+            $quack->image = $request->input('image');
+        }
+        if ($request->input('tags') !== null) {
+            $quack->tags = $request->input('tags');
+        }
+        $quack->user_id = 1;
+        $quack->save();
+        return redirect()->route('home')->with('message', 'Le Quack a bien été modifié');
     }
 
     /**
