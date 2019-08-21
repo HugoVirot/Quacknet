@@ -22,7 +22,7 @@
             <div class="col-4">
             </div>
             <div class="col-4 text-center">
-                <form class="col-12 mx-auto" action="{{ route('quacks.updatevalidation', $quack) }}" method="POST">
+                <form class="col-12 mx-auto" action="{{ route('quacks.update', $quack) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="form-group">

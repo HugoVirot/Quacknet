@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()            //affiche page avec les infos du compte
     {
         $user = Auth::user();
@@ -60,54 +65,9 @@ class UserController extends Controller
 
     public function profil($id)
     {
-//        $quacks = DB::table('quacks')->where('user_id', $id);
-//        $user = DB::table('users')->where('id', $id);
+
         $quacks = Quack::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
         return view('user/profil', ['quacks' => $quacks, 'user' => $user]);
     }
 }
-
-
-
-//        protected function validator(array $data)
-//    {
-//        return Validator::make($user, [
-//            'prenom' => ['required', 'string', 'max:30'],
-//            'nom' => ['required', 'string', 'max:30'],
-////            'duckname' => ['required', 'string', 'max:255'],
-////            'email' => ['required', 'string', 'email', 'max:255'],
-//            'password' => ['required', 'string', 'min:8', 'confirmed'],
-//        ]);
-//    }
-//
-//    validator($user);
-
-//return User::create([
-//'prenom' => $data['prenom'],
-//'nom' => $data['nom'],
-//'duckname' => $data['duckname'],
-//'email' => $data['email'],
-//'password' => Hash::make($data['password']),
-//]);
-
-//    public function update(Request $request, User $user)      //validation infos modifiées
-//    {
-//        $validatedData = $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
-//            'prenom' => 'required|max:50',
-//            'nom' => 'required|max:50',
-//            'duckname' => 'max:50',
-//            'email' => 'max:30',
-//            'password' => 'required|min:8',
-//        ]);
-//
-//        $user->prenom = $request->input('prenom');
-//        $user->nom = $request->input('nom');
-//        $user->duckname = $validatedData['duckname'];
-//        $user->email = $validatedData['email'];
-//        $user->password = $request->input('password');
-//        $user->save();
-//        return view('user.myaccount', ['user' => $user]);
-////        return redirect()->route('myaccount');
-//    }
-

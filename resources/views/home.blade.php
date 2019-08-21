@@ -99,8 +99,8 @@ QuackNet - Accueil
                             <!--                               onclick="document.getElementById('formulairemodif{{$quack->id}}').style.display = 'block'"-->
                             <!--                            >Modifier-->
                             <!--                            </a>-->
-                            <a href="{{ route('quacks.update', $quack) }}">
-                                <button class="btn btn-info">Modifier</button>
+                            <a href="{{ route('quacks.edit', $quack) }}">
+                                <button class="btn btn-secondary">Modifier</button>
                             </a>
                         </div>
                         <div class="col-4">
@@ -164,38 +164,37 @@ QuackNet - Accueil
                     <button type="submit" class="btn btn-primary">Valider</button>
             </form>
         </div>
-    </div>
-    <!--****************************************afficher les commentaires****************************************-->
-    @foreach($quack->commentaires as $commentaire)
-    <div class="container">
-        <div class="card mb-2">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col">{{$commentaire->user->duckname}}</div>
-                    <div class="col">posté le {{$commentaire->created_at}}</div>
+        <!--****************************************afficher les commentaires****************************************-->
+        @foreach($quack->commentaires as $commentaire)
+        <div class="container w-75">
+            <div class="card mb-2">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">{{$commentaire->user->duckname}}</div>
+                        <div class="col">posté le {{$commentaire->created_at}}</div>
+                    </div>
+                </div>
+                <div class="card-body">{{ $commentaire->content }}
+                    @if ($quack->user_id === Auth::id() || $commentaire->user_id === Auth::id())
+                    <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
+                    <form action="{{ route('commentaires.destroy', $commentaire) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                    @endif
+
                 </div>
             </div>
-            <div class="card-body">{{ $commentaire->content }}
-                @if ($quack->user_id === Auth::id() || $commentaire->user_id === Auth::id())
-                <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
-                <form action="{{ route('commentaires.destroy', $commentaire) }}" method="post">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
-                @endif
-
-            </div>
         </div>
+        @endforeach
+        @endforeach
+        <a href="quacks/create">
+            <button class="btn btn-primary mb-3">Poster un quack</button>
+        </a>
     </div>
-    @endforeach
-    @endforeach
-    <a href="quacks/create">
-        <button class="btn btn-primary mb-3">Poster un quack</button>
-    </a>
 </div>
-</div>
-</div>
+
 
 @endsection
 

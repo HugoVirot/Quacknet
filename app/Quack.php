@@ -14,7 +14,11 @@ class Quack extends Model
 
     public function commentaires()
     {
-        return $this->hasMany('App\Commentaire');
+        return $this->hasMany('App\Commentaire')->latest();
     }
 
+    public function commentairesValide()
+    {
+        return $this->hasMany('App\Commentaire')->where('valide', 1)->latest();
+    }
 }

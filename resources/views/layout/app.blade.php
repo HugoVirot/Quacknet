@@ -6,6 +6,7 @@
     <script src="/js/app.js"></script>
     <link rel="icon" href="{{ asset("images/duck.png") }}">
 </head>
+
 <body class="container-fluid text-center">
 <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm mb-5">
     <div class="container">

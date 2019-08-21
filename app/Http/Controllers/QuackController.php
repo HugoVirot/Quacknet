@@ -20,6 +20,11 @@ class QuackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['show']);
+    }
+
     public function index()
     {
         $quacks = Quack::with('commentaires.user')->latest()->get();
@@ -72,8 +77,9 @@ class QuackController extends Controller
 
     public function show(Quack $quack)
     {
-        $quack2 = Quack::where('id', $quack->id)->with('commentaires.user')->latest()->get();
-        return view('quack.show', ['quack' => $quack2]);
+        $quack->load(['user', 'commentaires.user']);
+
+        return view('quack.show', ['quack' => $quack]);
     }
 
     public function read(Quack $quack)
@@ -90,7 +96,7 @@ class QuackController extends Controller
      */
     public function edit(Quack $quack)
     {
-        return view('home');
+        return view('quack.update', ['quack' => $quack]);
     }
 
     /**
@@ -101,23 +107,14 @@ class QuackController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Quack $quack)
-    {
-
-        return view('quack.update', ['quack' => $quack]);
-
-    }
-
-    public function updatevalidation(Request $request)
+    public function update(Request $request, Quack $quack)
     {
         $request->validate([
             'content' => 'required|min:5',
-            'image' => '',
-            'tags' => '',
+            'image' => 'present',
+            'tags' => 'present',
         ]);
 
-        $id = $request->input('id');
-        $quack = Quack::where('id', $id)->get();
         $quack->content = $request->input('content');
         if ($request->input('image') !== null) {
             $quack->image = $request->input('image');
@@ -139,7 +136,6 @@ class QuackController extends Controller
      */
     public function destroy(Quack $quack)
     {
-
         $quack->delete();
         return redirect()->route('home')->with('message', 'Le Quack a bien été supprimé');
     }

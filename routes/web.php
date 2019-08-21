@@ -16,9 +16,7 @@ Route::get('/home', 'QuackController@index')->name('home');
 
 Auth::routes();                                                             //ensemble des routes de l'authentification
 
-Route::resource('/quacks', 'QuackController')->except('index', 'update');
-Route::get('/quacks/{quack}/update', 'QuackController@update')->name('quacks.update');
-Route::put('/quacks/updatevalidation', 'QuackController@updatevalidation')->name('quacks.updatevalidation');
+Route::resource('/quacks', 'QuackController')->except('index');
 
 Route::resource('/commentaires', 'CommentaireController')->except('index');
 
