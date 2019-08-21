@@ -25,16 +25,13 @@ class UserController extends Controller
         return view('user.account', ['user' => $user]);
     }
 
-
-    public function updatepage()    //affiche formulaire modification infos
-    {
+    public function edit(){
         $user = Auth::user();
 
         return view('user.accountupdatepage', ['user' => $user]);
     }
 
-
-    public function updatevalidation(Request $request)      //permet de valider les modifs
+    public function update(Request $request)      //permet de valider les modifs
     {
         $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
             'prenom' => 'max:50',
@@ -65,6 +62,12 @@ class UserController extends Controller
 
     public function profil($id)
     {
+
+//        $quack->load(['user', 'commentaires.user']);
+//
+//        return view('quack.show', ['quack' => $quack]);
+//
+//        $user->load(['quacks', ''])
 
         $quacks = Quack::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();

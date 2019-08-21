@@ -84,16 +84,24 @@ QuackNet - Accueil
                         <div class="col-4"></div>
                         <div class="col-4">{{ $quack->tags }}</div>
                     </div>
+                    <a href="{{ route ('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
-                    <!-- **************************************OPTIONS : MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
+                    <!-- **************************************OPTIONS : MASQUER, MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
                     <div class="row mt-2">
-                        <div class="col-4"><a class="btn btn-info"
-                                              onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'"
+                        @if (Auth::user()->roles_id == 2)
+                        <div class="col">
+                            <a href="{{ route ('quacks.softdelete', $quack) }}">
+                                <button class="btn btn-danger">Masquer</button>
+                            </a>
+                        </div>
+                        @endif
+                        <div class="col"><a class="btn btn-info"
+                                            onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'"
                             >Commenter
                             </a>
                         </div>
                         @if ($quack->user_id == Auth::user()->id)
-                        <div class="col-4">
+                        <div class="col">
                             <!--                            si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
                             <!--                            <a class="btn btn-info"-->
                             <!--                               onclick="document.getElementById('formulairemodif{{$quack->id}}').style.display = 'block'"-->
@@ -103,7 +111,7 @@ QuackNet - Accueil
                                 <button class="btn btn-secondary">Modifier</button>
                             </a>
                         </div>
-                        <div class="col-4">
+                        <div class="col">
                             <form action="{{ route('quacks.destroy', $quack) }}" method="post">
                                 @csrf
                                 @method('delete')
@@ -190,7 +198,7 @@ QuackNet - Accueil
         @endforeach
         @endforeach
         <a href="quacks/create">
-            <button class="btn btn-primary mb-3">Poster un quack</button>
+            <button class="btn btn-warning mb-3">Poster un quack</button>
         </a>
     </div>
 </div>

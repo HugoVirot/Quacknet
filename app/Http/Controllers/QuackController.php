@@ -136,7 +136,24 @@ class QuackController extends Controller
      */
     public function destroy(Quack $quack)
     {
-        $quack->delete();
-        return redirect()->route('home')->with('message', 'Le Quack a bien été supprimé');
+        if (Auth::user()->id == $quack->user_id) {
+            $quack->delete();
+            return redirect()->route('home')->with('message', 'Le quack a bien été supprimé');
+        } else {
+            echo("Suppression impossible");
+        }
+    }
+
+    public function softDelete(Quack $quack){
+
+        if (Auth::user()->roles_id == 2) {
+            try {
+                $quack->delete();
+            } catch (\Exception $e) {
+            }
+            return redirect()->route('home')->with('message', 'Le quack a bien été masqué');
+        } else {
+            echo("Impossible de masquer le quack");
+        }
     }
 }

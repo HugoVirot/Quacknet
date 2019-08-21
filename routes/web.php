@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/home', 'QuackController@index')->name('home');
+Route::get('/softdelete', 'QuackController@softDelete')->name('quacks.softdelete');
 
 Auth::routes();                                                             //ensemble des routes de l'authentification
 
@@ -22,7 +23,8 @@ Route::resource('/commentaires', 'CommentaireController')->except('index');
 
 Route::get('user/profil/{id}', 'User\UserController@profil')->name('user.profil');
 Route::get('user/account', 'User\UserController@index')->name('user.account');
-Route::get('user/account/update', 'User\UserController@updatepage')->name('user.account.updatepage');
-Route::put('user/account/update', 'User\UserController@updatevalidation')->name('user.account.updatevalidation');
+Route::get('user/account/edit', 'User\UserController@edit')->name('user.account.edit');
+Route::put('user/account/update', 'User\UserController@update')->name('user.account.update');
+
 
 
