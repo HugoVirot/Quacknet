@@ -10,18 +10,18 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="container-fluid text-center">
-                    <div class="col">profil de : <h1>{{ $user[0]->duckname }}</h1></div>
+                    <div class="col">profil de : <h1>{{ $user->duckname }}</h1></div>
                     <div class="row mb-2">
-                        <div class="col">Prénom : {{ $user[0]->prenom }}, nom : {{ $user[0]->nom }}</div>
+                        <div class="col">Prénom : {{ $user->prenom }}, nom : {{ $user->nom }}</div>
                     </div>
                     {{-- ***********************************AFFICHER LES QUACKS*****************************               --}}
-                    @foreach ($quacks as $quack)
+                    @foreach ($user->quacks as $quack)
                             <div class="card mb-1">
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col">
                                             <a href="{{ route ('user.profil', $quack->user_id) }}">
-                                                <strong>{{ $quack->user->duckname }}</strong>
+                                                <strong>{{ $user->duckname }}</strong>
                                             </a>
                                         </div>
                                         @if ($quack->created_at != $quack->updated_at)
@@ -82,7 +82,7 @@
                             <!-- **********************************************AJOUTER UN COMMENTAIRE**********************************************-->
                             <form style="display:none;" id="formulairecommentaire{{$quack->id}}"
                                   class="col-12 mx-auto mb-2"
-                                  action="{{ route('commentaires.store') }}"
+                                  action="{{ route('comments.store') }}"
                                   method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -129,19 +129,19 @@
                             {{--                <button type="submit" class="btn btn-primary">Valider</button>--}}
                             {{--            </div>--}}
                             {{--        </form>--}}
-                            @foreach($quack->commentaires as $commentaire)
+                            @foreach($quack->comments as $comment)
                                 <div class="container w-75">
                                     <div class="card mb-2">
                                         <div class="card-header">
                                             <div class="row">
-                                                <div class="col">{{$commentaire->user->duckname}}</div>
-                                                <div class="col">posté le {{$commentaire->created_at}}</div>
+                                                <div class="col">{{$comment->user->duckname}}</div>
+                                                <div class="col">posté le {{$comment->created_at}}</div>
                                             </div>
                                         </div>
-                                        <div class="card-body">{{ $commentaire->content }}
-                                        @if ($quack->user_id === Auth::id() || $commentaire->user_id === Auth::id())
+                                        <div class="card-body">{{ $comment->content }}
+                                        @if ($quack->user_id === Auth::id() || $comment->user_id === Auth::id())
                                             <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
-                                                <form action="{{ route('commentaires.destroy', $commentaire) }}"
+                                                <form action="{{ route('comments.destroy', $comment) }}"
                                                       method="post">
                                                     @csrf
                                                     @method('delete')

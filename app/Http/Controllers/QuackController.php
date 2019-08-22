@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Commentaire;
+use App\Comment;
 use App\Quack;
 use App\User;
 use Auth;
@@ -23,13 +23,6 @@ class QuackController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['show']);
-    }
-
-    public function index()
-    {
-        $quacks = Quack::with('commentaires.user')->latest()->get();
-
-        return view('home', ['quacks' => $quacks]);
     }
 
     /**
@@ -74,18 +67,11 @@ class QuackController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
-
     public function show(Quack $quack)
     {
-        $quack->load(['user', 'commentaires.user']);
+        $quack->load(['user', 'comments.user']);
 
         return view('quack.show', ['quack' => $quack]);
-    }
-
-    public function read(Quack $quack)
-    {
-
-        return view('home');
     }
 
     /**
@@ -136,24 +122,11 @@ class QuackController extends Controller
      */
     public function destroy(Quack $quack)
     {
-        if (Auth::user()->id == $quack->user_id) {
+        if (Auth::user()->id == $quack->user_id || Auth::user()->roles_id == 2) {
             $quack->delete();
             return redirect()->route('home')->with('message', 'Le quack a bien été supprimé');
         } else {
-            echo("Suppression impossible");
-        }
-    }
-
-    public function softDelete(Quack $quack){
-
-        if (Auth::user()->roles_id == 2) {
-            try {
-                $quack->delete();
-            } catch (\Exception $e) {
-            }
-            return redirect()->route('home')->with('message', 'Le quack a bien été masqué');
-        } else {
-            echo("Impossible de masquer le quack");
+            return redirect()->back()->withErrors(['erreur' => 'suppression impossible']);
         }
     }
 }

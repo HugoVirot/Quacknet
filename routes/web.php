@@ -12,19 +12,16 @@
 */
 
 Route::get('/', 'HomeController@index')->name('index');
-Route::get('/home', 'QuackController@index')->name('home');
-Route::get('/softdelete', 'QuackController@softDelete')->name('quacks.softdelete');
+Route::get('/home', 'HomeController@home')->name('home');
 
 Auth::routes();                                                             //ensemble des routes de l'authentification
 
 Route::resource('/quacks', 'QuackController')->except('index');
 
-Route::resource('/commentaires', 'CommentaireController')->except('index');
+Route::resource('/comments', 'CommentController')->except('index');
 
-Route::get('user/profil/{id}', 'User\UserController@profil')->name('user.profil');
-Route::get('user/account', 'User\UserController@index')->name('user.account');
-Route::get('user/account/edit', 'User\UserController@edit')->name('user.account.edit');
-Route::put('user/account/update', 'User\UserController@update')->name('user.account.update');
+Route::get('users/{user}', 'User\UserController@profil')->name('user.profil');
 
-
-
+Route::get('settings/account', 'User\UserController@index')->name('user.account');
+Route::get('settings/account/edit', 'User\UserController@edit')->name('user.account.edit');
+Route::put('settings/account/update', 'User\UserController@update')->name('user.account.update');

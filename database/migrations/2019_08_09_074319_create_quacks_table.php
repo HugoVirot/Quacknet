@@ -22,6 +22,7 @@ class CreateQuacksTable extends Migration
             $table->string('tags')->nullable();
             $table->timestamps();
 
+
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

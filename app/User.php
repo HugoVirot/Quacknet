@@ -39,15 +39,16 @@ class User extends Authenticatable
 
     public function quacks()
     {
-        return $this->hasMany('App\Quacks');
+        return $this->hasMany('App\Quack');
     }
 
-    public function commentaires()
+    public function comments()
     {
-        return $this->hasMany('App\Commentaire');
+        return $this->hasMany('App\Comment');
     }
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsTo('App\Role');
     }
 }

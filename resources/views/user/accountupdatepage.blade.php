@@ -21,7 +21,7 @@
             <div class="col-4">
             </div>
             <div class="col-4 text-center">
-                <form class="col-12 mx-auto" action="{{ route('user.account.updatevalidation') }}" method="POST">
+                <form class="col-12 mx-auto" action="{{ route('user.account.update') }}" method="POST">
                     {{--                    <input type="hidden" name="_method" value="PUT">--}}
                     {{--                    <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
                     @csrf

@@ -34,9 +34,9 @@ class UserController extends Controller
     public function update(Request $request)      //permet de valider les modifs
     {
         $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
-            'prenom' => 'max:50',
-            'nom' => 'max:50',
-            'password' => '',     //erreur si mdp identique à l'ancien
+            'prenom' => 'required|max:50',
+            'nom' => 'required|max:50',
+            'password' => 'present',     //erreur si mdp identique à l'ancien
         ]);
 
         $user = Auth::user();        //on récupère les données de base de l'utilisateur
@@ -60,17 +60,10 @@ class UserController extends Controller
         return redirect()->route('user.account');
     }
 
-    public function profil($id)
+    public function profil(User $user)
     {
+        $user->load('quacks.comments.user');
 
-//        $quack->load(['user', 'commentaires.user']);
-//
-//        return view('quack.show', ['quack' => $quack]);
-//
-//        $user->load(['quacks', ''])
-
-        $quacks = Quack::where('user_id', $id)->get();
-        $user = User::where('id', $id)->get();
-        return view('user/profil', ['quacks' => $quacks, 'user' => $user]);
+        return view('user.profil', ['user' => $user]);
     }
 }

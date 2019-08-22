@@ -8,20 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Quack extends Model
 {
     use SoftDeletes;
-    protected $dates = ['deleted_at'];
 
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
-    public function commentaires()
+    public function comments()
     {
-        return $this->hasMany('App\Commentaire')->latest();
+        return $this->hasMany('App\Comment')->latest();
     }
-
-    public function commentairesValide()
-    {
-        return $this->hasMany('App\Commentaire')->where('valide', 1)->latest();
-    }
+//
+//    public function commentsValidated()
+//    {
+//        return $this->hasMany('App\Comment')->where('valide', 1)->latest();
+//    }
 }

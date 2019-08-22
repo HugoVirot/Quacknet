@@ -70,7 +70,7 @@
 
         <!-- **********************************************AJOUTER UN COMMENTAIRE**********************************************-->
         <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2"
-              action="{{ route('commentaires.store') }}"
+              action="{{ route('comments.store') }}"
               method="POST">
             @csrf
             <div class="form-group">
@@ -92,20 +92,20 @@
             <button type="submit" class="btn btn-warning">Valider</button>
         </form>
     </div>
-    @foreach($quack->commentaires as $commentaire)
+    @foreach($quack->comments as $comment)
         <div class="container">
             <div class="card mb-2">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col">{{$commentaire->user->duckname}}</div>
-                        <div class="col">posté le {{$commentaire->created_at}}</div>
+                        <div class="col">{{$comment->user->duckname}}</div>
+                        <div class="col">posté le {{$comment->created_at}}</div>
                     </div>
                 </div>
-                <div class="card-body">{{ $commentaire->content }}
+                <div class="card-body">{{ $comment->content }}
                 @if (Auth::check())
-                    @if ($quack->user_id === Auth::id() || $commentaire->user_id === Auth::id())
+                    @if ($quack->user_id === Auth::id() || $comment->user_id === Auth::id())
                         <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
-                            <form action="{{ route('commentaires.destroy', $commentaire) }}" method="post">
+                            <form action="{{ route('comments.destroy', $comment) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">Supprimer</button>
