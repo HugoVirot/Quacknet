@@ -74,7 +74,7 @@ QuackNet - Accueil
                             >Commenter
                             </a>
                         </div>
-                        @if ($quack->user_id == Auth::user()->id)
+                        @if (Auth::user() -> can('update', $quack))
                         <div class="col">
                             <!--                            si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
                             <!--                            <a class="btn btn-info"-->
@@ -86,7 +86,7 @@ QuackNet - Accueil
                             </a>
                         </div>
                         @endif
-                        @if ($quack->user_id == Auth::user()->id || Auth::user()->roles_id == 2)
+                        @if (Auth::user() -> can('delete', $quack))
                         <div class="col">
                             <form action="{{ route('quacks.destroy', $quack) }}" method="post">
                                 @csrf
@@ -159,18 +159,24 @@ QuackNet - Accueil
                     </div>
                 </div>
                 <div class="card-body">{{ $comment->content }}
-                    @if ($quack->user_id === Auth::id() || $comment->user_id === Auth::id() || Auth::user()->roles_id == 2)
-                    <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
-                    <form action="{{ route('comments.destroy', $comment) }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
-                    <a href="{{ route('comments.edit', $comment) }}">
-                        <button class="btn btn-primary">Modifier</button>
-                    </a>
-                    @endif
-
+                    <div class="row mb-2">
+                        @can('update', $comment)
+                        <div class="col">
+                            <a href="{{ route('comments.edit', $comment) }}">
+                                <button class="btn btn-secondary">Modifier</button>
+                            </a></div>
+                        @endcan
+                        @can('delete', $comment)
+                        <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
+                        <div class="col">
+                            <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>
