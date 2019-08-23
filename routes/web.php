@@ -16,7 +16,9 @@ Route::get('/home', 'HomeController@home')->name('home');
 
 Auth::routes();                                                             //ensemble des routes de l'authentification
 
+Route::get('/quacks/search', 'QuackController@search')->name('quacks.search');
 Route::resource('/quacks', 'QuackController')->except('index');
+
 
 Route::resource('/comments', 'CommentController')->except('index');
 

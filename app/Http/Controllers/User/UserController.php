@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Quack;
 use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller

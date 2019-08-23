@@ -9,24 +9,6 @@ QuackNet - Accueil
 <div class="container mb-3">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="container-fluid text-center">
-
-                <!-- ****************************AFFICHER MESSAGE SUCCES SUPPRESSION QUACK***********************************-->
-                @if(session()->has('message'))
-                <p class="alert alert-success">{{ session()->get('message') }}</p>
-                @endif
-
-                <!-- **************************************************AFFICHAGE DES ERREURS****************************************-->
-                @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-            </div>
             <div class="container">
                 <div class="row border border-grey p-2 mb-3">
 
@@ -56,7 +38,6 @@ QuackNet - Accueil
             </div>
 
 
-
             <!-- **********************************************AFFICHER LES QUACKS**********************************************-->
             @foreach ($quacks as $quack)
             <div class="card mb-2">
@@ -76,9 +57,7 @@ QuackNet - Accueil
                     </div>
                 </div>
                 <div class="card-img mt-3">
-                    <img class="w-25" src="images/canard.jpg" alt="canard">
-                    <!--                    <img class="w-25" src="/images/{{$quack->image}}" alt="canard">-->
-                    <!--                    <img class="w-25" src="{{ asset("images/$quack->image") }}" alt="image">-->
+                    <img class="w-25" src="images/{{ $quack->image }}" alt="canard">
                 </div>
                 <div class="card-body">
                     <div>{{ $quack->content }}</div>
@@ -180,7 +159,7 @@ QuackNet - Accueil
                     </div>
                 </div>
                 <div class="card-body">{{ $comment->content }}
-                    @if ($quack->user_id === Auth::id() || $comment->user_id === Auth::id())
+                    @if ($quack->user_id === Auth::id() || $comment->user_id === Auth::id() || Auth::user()->roles_id == 2)
                     <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->
                     <form action="{{ route('comments.destroy', $comment) }}" method="post">
                         @csrf

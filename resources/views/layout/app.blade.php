@@ -10,7 +10,8 @@
 <body class="container-fluid text-center">
 <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm mb-5">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/home') }}"><img style="height: 40px; width: 40px;" src="{{ asset("images/duck.png") }}" alt="logo">
+        <a class="navbar-brand" href="{{ url('/home') }}"><img style="height: 40px; width: 40px;"
+                                                               src="{{ asset("images/duck.png") }}" alt="logo">
             {{ config('QuackNet', 'QuackNet') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -41,7 +42,8 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('user.profil', $user = Auth::user()->id) }}">{{ __('Mon profil') }}</a>
+                            <a class="dropdown-item"
+                               href="{{ route('user.profil', $user = Auth::user()->id) }}">{{ __('Mon profil') }}</a>
                             <a class="dropdown-item" href="{{ route('user.account') }}">{{ __('Mon compte') }}</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
@@ -58,7 +60,32 @@
             </ul>
         </div>
     </div>
+    <form class="mt-2" action="{{ route('quacks.search') }}" method="get" role="search">
+        <div class="input-group">
+            <input type="search" class="form-control" name="q" id="recherche" placeholder="Rechercher un Quack">
+            <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Go !</button>
+            </span>
+        </div>
+    </form>
 </nav>
+<div class="container-fluid text-center">
+    <!-- ****************************AFFICHER MESSAGE SUCCES SUPPRESSION QUACK***********************************-->
+    @if(session()->has('message'))
+        <p class="alert alert-success">{{ session()->get('message') }}</p>
+    @endif
+
+<!-- **************************************************AFFICHAGE DES ERREURS****************************************-->
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
 
 @yield('content')
 

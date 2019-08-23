@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="card-img mt-3">
-                <img class="w-25" src="{{asset('images/canard.jpg')}}" alt="canard">
+                <img class="w-25" src="images/{{ $quack->image }}" alt="canard">
             </div>
             <div class="card-body">
                 <div>{{ $quack->content }}</div>
@@ -34,35 +34,33 @@
 
                 <!-- **************************************OPTIONS : COMMENTER ET SUPPRIMER******************************************-->
                 @if (Auth::check())
-                    <div class="row mt-2">
-                        {{--                    seuls les modérateurs peuvent voir le bouton "masquer"--}}
-                        @if (Auth::user()->roles_id == 2)
-                            <div class="col">
-                                <button class="btn btn-danger">Masquer</button>
-                            </div>
-                        @endif
-                        {{-- tous les users connectés peuvent commenter le quack (pas ceux non-connectés)--}}
+                    {{-- tous les users connectés peuvent commenter le quack (pas ceux non-connectés)--}}
+                    <div class="row mb-2">
                         <div class="col"><a class="btn btn-primary"
                                             onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'"
                             >Commenter
                             </a>
                         </div>
                         <div class="col">
-                            @if ($quack->user_id === Auth::id())
-                                {{--si l'user connecté est celui qui a posté le quack, il peut le supprimer--}}
-                                {{--                            || $commentaire->user_id === Auth::id())--}}
-                                <form action="{{ route('quacks.update', $quack) }}" method="post">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="btn btn-secondary">Modifier</button>
-                                </form>
+                            @if ($quack->user_id == Auth::user()->id)
+                                <div class="col">
+                                    <!-- si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
+
+                                    <a href="{{ route('quacks.edit', $quack) }}">
+                                        <button class="btn btn-secondary">Modifier</button>
+                                    </a>
+                                </div>
+                            @endif
+                            @if ($quack->user_id == Auth::user()->id || Auth::user()->roles_id == 2)
+                                <div class="col">  <!-- user = auteur ou modérateur : il peut supprimer le quack-->
+                                    <form action="{{ route('quacks.destroy', $quack) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
-                        <form action="{{ route('quacks.destroy', $quack) }}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
-                        @endif
                     </div>
             </div>
             @endif
@@ -115,5 +113,5 @@
                 </div>
             </div>
         </div>
-        @endforeach
+    @endforeach
 @endsection

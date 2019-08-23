@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Quack;
-use Illuminate\Http\Request;
-use Auth;
+
 
 class HomeController extends Controller
 {

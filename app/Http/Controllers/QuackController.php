@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
+
 use App\Quack;
-use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 
 
 class QuackController extends Controller
@@ -22,7 +18,7 @@ class QuackController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['show']);
+        $this->middleware('auth')->except(['search','show']);
     }
 
     /**
@@ -108,7 +104,7 @@ class QuackController extends Controller
         if ($request->input('tags') !== null) {
             $quack->tags = $request->input('tags');
         }
-        $quack->user_id = 1;
+
         $quack->save();
         return redirect()->route('home')->with('message', 'Le Quack a bien été modifié');
     }
@@ -128,5 +124,18 @@ class QuackController extends Controller
         } else {
             return redirect()->back()->withErrors(['erreur' => 'suppression impossible']);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'q' => 'required',
+        ]);
+
+        $recherche = $request->input('q');
+
+        $quacks = DB::select('select * from quacks where tags like ?', ["%" . $recherche . "%"]);
+
+        return view('quack.searchresults', ['quacks' => $quacks]);
     }
 }
