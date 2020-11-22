@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Comment;
+use App\Policies\CommentPolicy;
+use App\Policies\QuackPolicy;
+use App\Quack;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +17,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
+        Quack::class => QuackPolicy::class,
+        Comment::class => CommentPolicy::class,
+
     ];
 
     /**
