@@ -23,7 +23,6 @@ class CreateQuacksTable extends Migration
             $table->timestamps();
             $table->date('deleted_at')->nullable();
 
-
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -3,36 +3,45 @@
 @section('title')
 QuackNet - Accueil
 @endsection
-
 @section('content')
 
 <div class="container mb-3">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="container">
-                <div class="row border border-grey p-2 mb-3">
 
-                    <!-- *************************************************AJOUTER UN QUACK**********************************************-->
-                    <form class="col-12 mx-auto mb-2" action="{{ route('quacks.store') }}" method="POST">
+            <div class="row justify-content-center p-5">
+                <div class="col-6">
+                    <img class="mb-3" src="images/duck.png">
+                    <h1>Bienvenue sur Quacknet</h1>
+                    <h5 class="font-weight-light">viens quacker avec nous !</h5>
+                </div>
+            </div>
+
+
+            <!-- *************************************************AJOUTER UN QUACK**********************************************-->
+
+            <div class="container">
+                <div class="row border rounded border-warning p-4 mb-5 justify-content-center">
+                    <h3 class="mt-3">Ca se passe ici !</h3>
+                    <form class="col-10 mx-auto m-4" action="{{ route('quacks.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="content">Tapez votre message</label>
-                            <textarea required class="container-fluid" type="text" name="content"
-                                      id="content"></textarea>
+                            <label for="content">tape ton texte</label>
+                            <textarea required class="container-fluid" type="text" name="content" id="content"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="nom">choisissez une image</label>
+                                <label for="nom">choisis une image</label>
                                 <input type="text" class="form-control" name="image" id="image">
                             </div>
                             <div class="col-6 form-group">
-                                <label class="label">ajoutez des tags</label>
+                                <label class="label">ajoute des tags</label>
                                 <div class="control">
                                     <input class="form-control" type="text" name="tags">
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-warning">Valider</button>
+                        <button type="submit" class="btn btn-warning mt-3">Quack !</button>
                     </form>
                 </div>
             </div>
@@ -40,38 +49,35 @@ QuackNet - Accueil
 
             <!-- **********************************************AFFICHER LES QUACKS**********************************************-->
             @foreach ($quacks as $quack)
-            <div class="card mb-2">
-                <div class="card-header">
+            <div class="card mb-4 mt-4">
+                <div class="card-header bg-warning">
                     <div class="row">
                         <div class="col">
                             <a href="{{ route ('user.profil', $quack->user_id) }}">
                                 <strong>{{ $quack->user->duckname }}</strong>
                             </a>
                         </div>
+                        <div class="col"># {{ $quack->tags }}
+                        </div>
                         @if ($quack->created_at != $quack->updated_at)
                         <div class="col"> modifié le {{ $quack->updated_at }}</div>
                         @else
-                        <div class="col"></div>
                         @endif
                         <div class="col"> posté le {{ $quack->created_at }}</div>
                     </div>
                 </div>
-                <div class="card-img mt-3">
-                    <img class="w-25" src="images/{{ $quack->image }}" alt="canard">
+                @if (isset ($quack->image))
+                <div class="card-img p-3">
+                    <img class="w-50 m-3" src="images/{{ $quack->image }}" alt="imageUtilisateur">
                 </div>
+                @endif
                 <div class="card-body">
-                    <div>{{ $quack->content }}</div>
-                    <div class="row mt-2">
-                        <div class="col-4"></div>
-                        <div class="col-4">{{ $quack->tags }}</div>
-                    </div>
+                    <p>{{ $quack->content }}</p>
                     <a href="{{ route ('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
                     <!-- **************************************OPTIONS : MASQUER, MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
                     <div class="row mt-2">
-                        <div class="col"><a class="btn btn-info"
-                                            onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'"
-                            >Commenter
+                        <div class="col"><a class="btn btn-info" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'">Commenter
                             </a>
                         </div>
                         @if (Auth::user() -> can('update', $quack))
@@ -100,14 +106,11 @@ QuackNet - Accueil
                 </div>
 
                 <!-- **********************************************AJOUTER UN COMMENTAIRE**********************************************-->
-                <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2"
-                      action="{{ route('comments.store') }}"
-                      method="POST">
+                <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2" action="{{ route('comments.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="content">Tapez votre message</label>
-                        <textarea required class="container-fluid" type="text" name="content"
-                                  id="content"></textarea>
+                        <textarea required class="container-fluid" type="text" name="content" id="content"></textarea>
                     </div>
                     <div class="row">
                         <div class="col-4"></div>
@@ -115,11 +118,9 @@ QuackNet - Accueil
                             <label for="nom">image (facultatif)</label>
                             <input type="text" class="form-control" name="image" id="image">
                         </div>
-                        <input class="form-control" type="hidden" id="quack_id" name="quack_id"
-                               value="{{$quack->id}}">
+                        <input class="form-control" type="hidden" id="quack_id" name="quack_id" value="{{$quack->id}}">
                     </div>
-                    <button class="btn btn-danger"
-                            onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'none'">
+                    <button class="btn btn-danger" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'none'">
                         Annuler
                     </button>
                     <button type="submit" class="btn btn-warning">Valider</button>
@@ -128,15 +129,12 @@ QuackNet - Accueil
 
             <!--                ***************************************modifier le quack******************************-->
 
-            <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2"
-                  action="{{ route('quacks.update', $quack) }}"
-                  method="POST">
+            <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2" action="{{ route('quacks.update', $quack) }}" method="POST">
                 @method("put")
                 @csrf
                 <div class="form-group">
                     <label for="content">Nouveau texte</label>
-                    <input required type="text" class="form-control" name="content"
-                           value="{{ $quack->content }}" id="content">
+                    <input required type="text" class="form-control" name="content" value="{{ $quack->content }}" id="content">
                 </div>
                 <div class="form-group">
                     <label for="image">Nouvelle image</label>
@@ -149,8 +147,11 @@ QuackNet - Accueil
             </form>
         </div>
         <!--****************************************afficher les commentaires****************************************-->
+        @if ($quack->comments)
+        <h5 class="mb-3">Commentaires du quack</h5>
+        @endif
         @foreach($quack->comments as $comment)
-        <div class="container w-75">
+        <div class="container w-75 mb-4">
             <div class="card mb-2">
                 <div class="card-header">
                     <div class="row">
@@ -158,7 +159,13 @@ QuackNet - Accueil
                         <div class="col">posté le {{$comment->created_at}}</div>
                     </div>
                 </div>
-                <div class="card-body">{{ $comment->content }}
+                <div class="card-body">
+                    {{ $comment->content }}
+                    @if (isset ($comment->image))
+                    <div class="card-img p-3">
+                        <img style="width: 15vw" src="images/{{ $comment->image }}" alt="imageUtilisateur">
+                    </div>
+                    @endif
                     <div class="row mb-2">
                         @can('update', $comment)
                         <div class="col">
@@ -190,4 +197,3 @@ QuackNet - Accueil
 
 
 @endsection
-

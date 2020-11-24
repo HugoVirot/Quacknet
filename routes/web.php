@@ -11,19 +11,28 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('index');
+// page de connexion
+Route::get('/', 'HomeController@index')->name('index'); 
+
+// accueil / liste des quacks
 Route::get('/home', 'HomeController@home')->name('home');
+// envoyer image en post
+Route::post('/home', 'HomeController@home')->name('home'); 
 
-Auth::routes();                                                             //ensemble des routes de l'authentification
+//ensemble des routes de l'authentification
+Auth::routes();  
 
-Route::get('/quacks/search', 'QuackController@search')->name('quacks.search');
-Route::resource('/quacks', 'QuackController')->except('index');
+// rechercher un quack
+Route::get('/quacks/search', 'QuackController@search')->name('quacks.search'); 
 
+// routes crud quack
+Route::resource('/quacks', 'QuackController')->except('index'); 
 
-Route::resource('/comments', 'CommentController')->except('index');
+// routes crud commentaires
+Route::resource('/comments', 'CommentController')->except('index'); 
 
+ // profil utilisateur : afficher / modifier / valider modif
 Route::get('users/{user}', 'User\UserController@profil')->name('user.profil');
-
 Route::get('settings/account', 'User\UserController@index')->name('user.account');
 Route::get('settings/account/edit', 'User\UserController@edit')->name('user.account.edit');
 Route::put('settings/account/update', 'User\UserController@update')->name('user.account.update');

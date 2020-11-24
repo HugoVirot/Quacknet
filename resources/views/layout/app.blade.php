@@ -1,6 +1,7 @@
 <html lang="fr">
 <head>
     <title>@yield('title')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script src="/js/app.js"></script>

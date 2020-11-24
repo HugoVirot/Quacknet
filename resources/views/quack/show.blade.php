@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="card-img mt-3">
-                <img class="w-25" src="images/{{ $quack->image }}" alt="canard">
+                <img class="w-25" src="./public/images/{{ $quack->image }}" alt="canard">
             </div>
             <div class="card-body">
                 <div>{{ $quack->content }}</div>
@@ -98,7 +98,13 @@
                         <div class="col">posté le {{$comment->created_at}}</div>
                     </div>
                 </div>
-                <div class="card-body">{{ $comment->content }}
+                <div class="card-body">
+                    {{ $comment->content }}
+                    @if (isset ($comment->image))
+                    <div class="card-img p-3">
+                        <img style="width: 15vw" src="images/{{ $comment->image }}" alt="imageUtilisateur">
+                    </div>
+                    @endif
                     <div class="row mb-2">
                         @can('update', $comment)
                             <div class="col">

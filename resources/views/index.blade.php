@@ -6,11 +6,11 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="container-fluid text-center mt-5">
-<img class="w-25" src="{{ asset("images/duck.png") }}" alt="logo">
-<div class="pl-5 container w-50 border border-dark p-3">
-    <div class="row">
-        <div class="pb-3">
-            <h2 class="ml-5">Bienvenue sur QuackNet !</h2>
+<img class="mb-5 mt-5" src="{{ asset("images/duck.png") }}" alt="logo">
+<div class="pl-5 container w-50 border border-dark p-5">
+    <div class="row justify-content-center text-center ">
+        <div class="pb-5">
+            <h2>Bienvenue sur QuackNet !</h2>
         </div>
     </div>
     <div class="row">

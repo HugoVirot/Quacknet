@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 
-use App\Quack;
+use App\Comment;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class QuackController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,21 +39,19 @@ class QuackController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([     
             'content' => 'required|min:5',
             'image' => '',
-            'tags' => '',     //erreur si mdp identique à l'ancien
         ]);
 
         $user = Auth::user();
 
-        $quack = new Quack;
-        $quack->user_id = $user->id;
-        $quack->content = $request->input('content');
-        $quack->image = $request->input('image');
-        $quack->tags = $request->input('tags');
-        $quack->save();
+        $comment = new Comment;
+        $comment->user_id = $user->id;
+        $comment->quack_id = $request->input('quack_id');
+        $comment->content = $request->input('content');
+        $comment->image = $request->input('image');
+        $comment->save();
 
         return redirect()->route('home');
     }
@@ -64,11 +62,11 @@ class QuackController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
-    public function show(Quack $quack)
+    public function show(Comment $comment)
     {
-        $quack->load(['user', 'comments.user']);
+        $comment->load(['user', 'comments.user']);
 
-        return view('quack.show', ['quack' => $quack]);
+        return view('quack.show', ['quack' => $comment]);
     }
 
     /**
@@ -77,9 +75,9 @@ class QuackController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
-    public function edit(Quack $quack)
+    public function edit(Comment $comment)
     {
-        return view('quack.update', ['quack' => $quack]);
+        return view('comment.update', ['comment' => $comment]);
     }
 
     /**
@@ -90,24 +88,20 @@ class QuackController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request, Quack $quack)
+    public function update(Request $request, Comment $comment)
     {
         $request->validate([
             'content' => 'required|min:5',
             'image' => 'present',
-            'tags' => 'present',
         ]);
 
-        $quack->content = $request->input('content');
+        $comment->content = $request->input('content');
         if ($request->input('image') !== null) {
-            $quack->image = $request->input('image');
-        }
-        if ($request->input('tags') !== null) {
-            $quack->tags = $request->input('tags');
+            $comment->image = $request->input('image');
         }
 
-        $quack->save();
-        return redirect()->route('home')->with('message', 'Le Quack a bien été modifié');
+        $comment->save();
+        return redirect()->route('home')->with('message', 'Le commentaire a bien été modifié');
     }
 
     /**
@@ -117,26 +111,13 @@ class QuackController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Quack $quack)
+    public function destroy(Comment $comment)
     {
-        if (Auth::user()->id == $quack->user_id || Auth::user()->roles_id == 2) {
-            $quack->delete();
-            return redirect()->route('home')->with('message', 'Le quack a bien été supprimé');
+        if (Auth::user()->id == $comment->user_id || Auth::user()->roles_id == 2) {
+            $comment->delete();
+            return redirect()->route('home')->with('commentaire', 'Le quack a bien été supprimé');
         } else {
             return redirect()->back()->withErrors(['erreur' => 'suppression impossible']);
         }
-    }
-
-    public function search(Request $request)
-    {
-        $request->validate([
-            'q' => 'required',
-        ]);
-
-        $recherche = $request->input('q');
-
-        $quacks = DB::select('select * from quacks where tags like ?', ["%" . $recherche . "%"]);
-
-        return view('quack.searchresults', ['quacks' => $quacks]);
     }
 }

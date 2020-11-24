@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('quack_id');
             $table->text('content');
+            $table->text('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('tags')->nullable();
             $table->timestamps();
