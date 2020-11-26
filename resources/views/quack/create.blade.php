@@ -18,7 +18,10 @@
                         </div>
                     @endif
                 </div>
-                <div class="container">
+                <div class="row p-5 justify-content-center">
+                    <h3>Poster un quack</h3>
+                </div>
+                <div class="container w-50">
                     <div class=" row border border-dark p-3 mb-2">
                         <form class="col-12 mx-auto mb-2" action="{{ route('quacks.store') }}" method="POST">
                             @csrf
@@ -39,7 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Valider</button>
+                            <button type="submit" class="btn btn-primary">Quack !</button>
                         </form>
                     </div>
                 </div>

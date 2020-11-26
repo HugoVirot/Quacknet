@@ -16,20 +16,24 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function __construct()
     {
-        $this->middleware('auth')->except(['search','show']);
+        $this->middleware('auth')->except(['search', 'show']);
     }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         return view('quack.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -37,9 +41,10 @@ class CommentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-        $request->validate([     
+        $request->validate([
             'content' => 'required|min:5',
             'image' => '',
         ]);
@@ -62,6 +67,7 @@ class CommentController extends Controller
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
+
     public function show(Comment $comment)
     {
         $comment->load(['user', 'comments.user']);
@@ -69,16 +75,19 @@ class CommentController extends Controller
         return view('quack.show', ['quack' => $comment]);
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Quack $quack
      * @return \Illuminate\Http\Response
      */
+
     public function edit(Comment $comment)
     {
         return view('comment.update', ['comment' => $comment]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -104,6 +113,7 @@ class CommentController extends Controller
         return redirect()->route('home')->with('message', 'Le commentaire a bien été modifié');
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -111,6 +121,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
+
     public function destroy(Comment $comment)
     {
         if (Auth::user()->id == $comment->user_id || Auth::user()->roles_id == 2) {

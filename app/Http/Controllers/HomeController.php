@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Quack;
+use Illuminate\Support\Facades\DB;
 
 
 class HomeController extends Controller
@@ -31,7 +32,9 @@ class HomeController extends Controller
 
     public function home()
     {
-        $quacks = Quack::with('comments.user')->latest()->get();
+        // récupère tous les quacks avec leurs commentaires 
+        // ('comments' =  dans le modèle Quack, nom de la fonction qui spécifie la relation)
+        $quacks = Quack::with('comments')->latest()->get();
         return view('home', ['quacks' => $quacks]);
     }
 }

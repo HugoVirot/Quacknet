@@ -19,7 +19,7 @@ class CreateQuacksTable extends Migration
             $table->text('content');
             $table->unsignedBigInteger('user_id');
             $table->string('image')->nullable();
-            $table->string('tags')->nullable();
+            $table->string('tags');
             $table->timestamps();
             $table->date('deleted_at')->nullable();
 

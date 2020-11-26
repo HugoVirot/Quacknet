@@ -3,6 +3,7 @@
 @section('title')
 QuackNet - Accueil
 @endsection
+
 @section('content')
 
 <div class="container mb-3">
@@ -49,7 +50,7 @@ QuackNet - Accueil
 
             <!-- **********************************************AFFICHER LES QUACKS**********************************************-->
             @foreach ($quacks as $quack)
-            <div class="card mb-4 mt-4">
+            <div class="card mb-4 mt-5">
                 <div class="card-header bg-warning">
                     <div class="row">
                         <div class="col">
@@ -73,7 +74,7 @@ QuackNet - Accueil
                 @endif
                 <div class="card-body">
                     <p>{{ $quack->content }}</p>
-                    <a href="{{ route ('quacks.show', $quack) }}">Zoom sur ce quack</a>
+                    <a href="{{ route('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
                     <!-- **************************************OPTIONS : MASQUER, MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
                     <div class="row mt-2">
@@ -82,11 +83,7 @@ QuackNet - Accueil
                         </div>
                         @if (Auth::user() -> can('update', $quack))
                         <div class="col">
-                            <!--                            si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
-                            <!--                            <a class="btn btn-info"-->
-                            <!--                               onclick="document.getElementById('formulairemodif{{$quack->id}}').style.display = 'block'"-->
-                            <!--                            >Modifier-->
-                            <!--                            </a>-->
+                            <!--si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
                             <a href="{{ route('quacks.edit', $quack) }}">
                                 <button class="btn btn-secondary">Modifier</button>
                             </a>
@@ -146,16 +143,22 @@ QuackNet - Accueil
                     <button type="submit" class="btn btn-primary">Valider</button>
             </form>
         </div>
+
         <!--****************************************afficher les commentaires****************************************-->
-        @if ($quack->comments)
+
+        @if(!empty($quack->comments))
         <h5 class="mb-3">Commentaires du quack</h5>
         @endif
         @foreach($quack->comments as $comment)
         <div class="container w-75 mb-4">
             <div class="card mb-2">
-                <div class="card-header">
+                <div class="card-header bg-primary text-light">
                     <div class="row">
-                        <div class="col">{{$comment->user->duckname}}</div>
+                        <div class="col">
+                            <a href="{{ route ('user.profil', $quack->user_id) }}" style="color: inherit; text-decoration: none">
+                                <strong>{{ $comment->user->duckname }}</strong>
+                            </a>
+                        </div>
                         <div class="col">posté le {{$comment->created_at}}</div>
                     </div>
                 </div>
@@ -193,6 +196,7 @@ QuackNet - Accueil
             <button class="btn btn-warning mb-3">Poster un quack</button>
         </a>
     </div>
+</div>
 </div>
 
 
