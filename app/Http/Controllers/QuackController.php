@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Quack;
-use App\Comment;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +19,7 @@ class QuackController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['search','show']);
+        $this->middleware('auth')->except(['search', 'show']);
     }
 
 
@@ -46,11 +44,10 @@ class QuackController extends Controller
 
     public function store(Request $request)
     {
-
-        $request->validate([     
+        $request->validate([
             'content' => 'required|min:5',
             'image' => '',
-            'tags' => '',     //erreur si mdp identique à l'ancien
+            'tags' => '',
         ]);
 
         $user = Auth::user();
@@ -75,13 +72,7 @@ class QuackController extends Controller
 
     public function show(Quack $quack)
     {
-        // $quack->load(['user', 'comments.user']);
-        $user = User::where('id', $quack->user_id)->get();
-        $comments = Comment::where('user_id', $quack->user_id)->get();
-        return view('quack.show', [
-            'quack' => $quack, 
-            'comments' => $comments,
-            'user' => $user]);
+        return view('quack.show', ['quack' => $quack,]);
     }
 
 
@@ -155,8 +146,14 @@ class QuackController extends Controller
 
         $recherche = $request->input('q');
 
-        $quacks = DB::select('select * from quacks where tags like ?', ["%" . $recherche . "%"]);
-
+        // $quacks = DB::select('select * from quacks where tags like ?', ["%" . $recherche . "%"]);
+        $quacks = DB::table('quacks')
+            ->where('quacks.tags', 'like', "%$recherche%")
+            ->orWhere('quacks.content', 'like', "%$recherche%")
+            ->join('users', 'quacks.user_id', '=', 'users.id')
+            // ->leftJoin('comments', 'quacks.id', '=', 'comments.quack_id')
+            // ->select('users.*', 'quacks.*', 'comments.content as commentcontent')
+            ->get();
         return view('quack.searchresults', ['quacks' => $quacks]);
     }
 }

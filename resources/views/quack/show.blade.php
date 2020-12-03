@@ -1,7 +1,7 @@
 @extends ('layout.app')
 
 @section('title')
-QuackNet - Quack
+QuackNet - Zoom sur le Quack
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@ QuackNet - Quack
         </div>
         @if (isset ($quack->image))
         <div class="card-img p-3">
-            <img class="w-50 m-3" src="images/ <?= $quack->image ?>" alt="imageUtilisateur">
+            <img class="w-50 m-3" src="{{ asset("images/$quack->image") }}" alt="imageUtilisateur">
         </div>
         @endif
 
@@ -99,7 +99,7 @@ QuackNet - Quack
             {{ $comment->content }}
             @if (isset ($comment->image))
             <div class="card-img p-3">
-                <img style="width: 15vw" src="images/{{ $comment->image }}" alt="imageUtilisateur">
+                <img style="width: 15vw" src="{{ asset("images/$quack->image") }}" alt="imageUtilisateur">
             </div>
             @endif
             <div class="row mb-2">

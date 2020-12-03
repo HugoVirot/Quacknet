@@ -10,6 +10,13 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any comments.
      *
@@ -65,7 +72,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        if (($user->id === $comment->user_id)|| ($user->id === $comment->quack->user_id) || ($user->roles_id === 2)){
+        if (($user->id === $comment->user_id)|| ($user->id === $comment->quack->user_id)){
             return true;
         }
     }

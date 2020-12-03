@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Role');
     }
+
+    public function isAdmin()
+    {
+        return auth()->user()->roles_id === 2;
+    }
 }

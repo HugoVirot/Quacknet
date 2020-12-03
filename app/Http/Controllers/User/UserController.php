@@ -19,29 +19,28 @@ class UserController extends Controller
     public function index()            //affiche page avec les infos du compte
     {
         $user = Auth::user();
-
         return view('user.account', ['user' => $user]);
     }
 
-    public function edit(){
+    public function edit()
+    {
         $user = Auth::user();
-
         return view('user.accountupdatepage', ['user' => $user]);
     }
 
     public function update(Request $request)      //permet de valider les modifs
     {
-        $request->validate([     //method not found : ignorer, marche quand même (idem digidog)
+        $request->validate([ 
             'prenom' => 'required|max:50',
             'nom' => 'required|max:50',
-            'password' => 'present',     //erreur si mdp identique à l'ancien
+            'password' => 'present',  
         ]);
 
-        $user = Auth::user();        //on récupère les données de base de l'utilisateur
+        $user = Auth::user();                              //on récupère les données de base de l'utilisateur
         $user->prenom = $request->input('prenom');         //on insère ainsi les nouvelles données
         $user->nom = $request->input('nom');
 
-        if ($request->input('password') !== null) {                                    //si on a rentré un nouveau mdp
+        if ($request->input('password') !== null) {                 //si on a rentré un nouveau mdp
             $request->validate(['password' => 'min:8|confirmed']);  //on le teste (si pas bon => erreur)
             $oldpassword = $user->password;
             $newpassword = $request->input('password');
@@ -60,8 +59,8 @@ class UserController extends Controller
 
     public function profil(User $user)
     {
-        $user->load('quacks.comments.user');
-
+        // $user->load('quacks.comments.user');
+        $user->load('quacks');
         return view('user.profil', ['user' => $user]);
     }
 }

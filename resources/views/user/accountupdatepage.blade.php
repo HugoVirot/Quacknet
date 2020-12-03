@@ -19,6 +19,7 @@
         </div>
         <div class="row">
             <div class="col-4">
+                Mettre à jour ton compte
             </div>
             <div class="col-4 text-center">
                 <form class="col-12 mx-auto" action="{{ route('user.account.update') }}" method="POST">

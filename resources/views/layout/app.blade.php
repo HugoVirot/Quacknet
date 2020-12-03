@@ -9,7 +9,7 @@
     <link rel="icon" href="{{ asset("images/duck.png") }}">
 </head>
 
-<header class="container-fluid text-center">
+<header class="text-center">
     <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm mb-5">
         <div class="container">
             <a class="navbar-brand ml-2" href="{{ url('/home') }}"><img style="height: 40px; width: 40px;" src="{{ asset("images/duck.png") }}" alt="logo">
@@ -69,7 +69,7 @@
     </nav>
 </header>
 
-<body class="container-fluid text-center">
+<body class="text-center">
 
     <div class="container-fluid text-center">
         <!-- ****************************AFFICHER MESSAGE SUCCES SUPPRESSION QUACK***********************************-->
@@ -93,7 +93,7 @@
 
 </body>
 
-<footer class="container-fluid text-center bg-warning p-5 mt-5">
+<footer class="text-center bg-warning p-5 mt-5">
     <p>© QuackNet 2020 - codé par des canards pour des canards</p>
 </footer>
 

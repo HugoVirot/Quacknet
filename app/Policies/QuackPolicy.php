@@ -11,6 +11,13 @@ class QuackPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any quacks.
      *
@@ -40,7 +47,7 @@ class QuackPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create()
     {
         if (Auth::user())
         {
@@ -69,7 +76,7 @@ class QuackPolicy
      */
     public function delete(User $user, Quack $quack)
     {
-        if (($user->id === $quack->user_id)||($user->roles_id === 2)){
+        if (($user->id === $quack->user_id)){
             return true;
         }
     }

@@ -11,10 +11,10 @@ QuackNet - Accueil
         <div class="col-md-10">
 
             <div class="row justify-content-center p-5">
-                <div class="col-6">
+                <div class="col-8">
                     <img class="mb-3" src="images/duck.png">
-                    <h1>Bienvenue sur Quacknet</h1>
-                    <h5 class="font-weight-light">viens quacker avec nous !</h5>
+                    <h1 class="mb-3">Bienvenue sur Quacknet, {{ Auth::user()->duckname }} !</h1>
+                    <h5 class="font-weight-light">Viens quacker avec nous !</h5>
                 </div>
             </div>
 
@@ -50,7 +50,7 @@ QuackNet - Accueil
 
             <!-- **********************************************AFFICHER LES QUACKS**********************************************-->
             @foreach ($quacks as $quack)
-            <div class="card mb-4 mt-5">
+            <div class="card mb-4 mt-5 pb-2">
                 <div class="card-header bg-warning">
                     <div class="row">
                         <div class="col">
@@ -60,19 +60,18 @@ QuackNet - Accueil
                         </div>
                         <div class="col"># {{ $quack->tags }}
                         </div>
-                        @if ($quack->created_at != $quack->updated_at)
+                        @if ($quack->created_at !== $quack->updated_at)
                         <div class="col"> modifié le {{ $quack->updated_at }}</div>
-                        @else
                         @endif
                         <div class="col"> posté le {{ $quack->created_at }}</div>
                     </div>
                 </div>
                 @if (isset ($quack->image))
                 <div class="card-img p-3">
-                    <img class="w-50 m-3" src="images/{{ $quack->image }}" alt="imageUtilisateur">
+                    <img class="m-1" style="width: 45vw" src="images/{{ $quack->image }}" alt="imageUtilisateur">
                 </div>
                 @endif
-                <div class="card-body">
+                <div class="card-body ml-5 mr-5">
                     <p>{{ $quack->content }}</p>
                     <a href="{{ route('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
@@ -146,9 +145,6 @@ QuackNet - Accueil
 
         <!--****************************************afficher les commentaires****************************************-->
 
-        @if(!empty($quack->comments))
-        <h5 class="mb-3">Commentaires du quack</h5>
-        @endif
         @foreach($quack->comments as $comment)
         <div class="container w-75 mb-4">
             <div class="card mb-2">

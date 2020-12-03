@@ -23,8 +23,8 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('tags')->nullable();
             $table->timestamps();
-            $table->date('deleted_at')->nullable();
-
+            $table->softDeletes();
+            
             $table->foreign('quack_id')->references('id')->on('quack');
             $table->foreign('user_id')->references('id')->on('users');
         });

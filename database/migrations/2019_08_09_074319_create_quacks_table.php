@@ -21,8 +21,8 @@ class CreateQuacksTable extends Migration
             $table->string('image')->nullable();
             $table->string('tags');
             $table->timestamps();
-            $table->date('deleted_at')->nullable();
-
+            $table->softDeletes();
+            
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
