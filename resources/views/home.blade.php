@@ -82,6 +82,11 @@ QuackNet - Accueil
             <div class="card mb-4 mt-5 pb-2">
                 <div class="card-header bg-warning">
                     <div class="row">
+                        @if($quack->user->image)
+                        <div class="col">
+                            <img class="m-1 rounded-circle" style="width: 5vw; height:5vw" src="images/{{ $quack->user->image }}" alt="imageUtilisateur">
+                        </div>
+                        @endif
                         <div class="col">
                             <a href="{{ route ('user.profil', $quack->user_id) }}">
                                 <strong>{{ $quack->user->duckname }}</strong>
@@ -97,7 +102,7 @@ QuackNet - Accueil
                 </div>
                 @if (isset ($quack->image))
                 <div class="card-img p-3">
-                    <img class="m-1" style="width: 45vw" src="images/{{ $quack->image }}" alt="imageUtilisateur">
+                    <img class="m-1" style="width: 45vw" src="images/{{ $quack->image }}" alt="imageQuack">
                 </div>
                 @endif
                 <div class="card-body ml-5 mr-5">
@@ -146,7 +151,8 @@ QuackNet - Accueil
                                 <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
                                 @else
                                 <input type="text" class="form-control" name="image" id="image" placeholder="upload d'image ci-dessous">
-                                @endif                            </div>
+                                @endif
+                            </div>
                             <input class="form-control" type="hidden" id="quack_id" name="quack_id" value="{{$quack->id}}">
                         </div>
                         <button class="btn btn-danger" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'none'">
@@ -214,7 +220,7 @@ QuackNet - Accueil
                     {{ $comment->content }}
                     @if (isset ($comment->image))
                     <div class="card-img p-3">
-                        <img style="width: 15vw" src="images/{{ $comment->image }}" alt="imageUtilisateur">
+                        <img style="width: 15vw" src="images/{{ $comment->image }}" alt="imageQuack">
                     </div>
                     @endif
                     <div class="row mb-2">

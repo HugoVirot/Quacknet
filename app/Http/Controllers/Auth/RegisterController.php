@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'duckname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'image' => 'string'
         ]);
     }
 
@@ -71,6 +72,7 @@ class RegisterController extends Controller
             'duckname' => $data['duckname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'image' => $data['image']
         ]);
     }
 }

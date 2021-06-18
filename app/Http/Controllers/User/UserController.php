@@ -35,12 +35,14 @@ class UserController extends Controller
         $request->validate([ 
             'prenom' => 'required|min:3|max:50',
             'nom' => 'required|min:3|max:50',
-            'password' => 'present',  
+            'image' => 'required|string',
+            'password' => 'present' 
         ]);
 
         $user = Auth::user();                              //on récupère les données de base de l'utilisateur
         $user->prenom = $request->input('prenom');         //on insère ainsi les nouvelles données
         $user->nom = $request->input('nom');
+        $user->image = $request->input('image');
 
         if ($request->input('password') !== null) {                 //si on a rentré un nouveau mdp
             $request->validate(['password' => 'confirmed|min:8']);  //on le teste (si pas bon => erreur)

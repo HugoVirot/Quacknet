@@ -94,6 +94,7 @@ class QuackController extends Controller
         ]);
 
         $quack->content = $request->input('content');
+        
         if ($request->input('image') !== null) {
             $quack->image = $request->input('image');
         }

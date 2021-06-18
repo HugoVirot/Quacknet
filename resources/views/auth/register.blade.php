@@ -2,7 +2,7 @@
 
 @section('title')
 Inscription
-    @endsection
+@endsection
 
 @section('content')
 <div class="container">
@@ -22,9 +22,9 @@ Inscription
                                 <input id="prenom" type="text" class="form-control @error('prenom') is-invalid @enderror" name="prenom" value="{{ old('prenom') }}" required autocomplete="prenom" autofocus>
 
                                 @error('prenom')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -37,8 +37,8 @@ Inscription
 
                                 @error('nom')
                                 <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -51,8 +51,28 @@ Inscription
 
                                 @error('duckname')
                                 <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('image (facultative)') }}</label>
+
+                            <div class="col-md-6">
+                                @if(Session::get('image'))
+                                <input id="image" type="text" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ Session::get('image') }}" autocomplete="image" autofocus>
+                                @else
+                                <input id="image" type="text" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image" 
+                                placeholder="upload d'image ci-dessous" autofocus>
+                                @endif
+
+                                @error('image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -64,9 +84,9 @@ Inscription
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -78,9 +98,9 @@ Inscription
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -97,6 +117,21 @@ Inscription
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Valider') }}
                                 </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row justify-content-center">
+                            <p class="mt-3">Uploader une image</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="file" name="image" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success">Upload</button>
                             </div>
                         </div>
                     </form>

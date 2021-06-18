@@ -5,11 +5,15 @@ profil
 @endsection
 
 @section('content')
-
 <div class="container mb-3">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="container-fluid text-center p-3">
+                @if($user->image)
+                <div class="col">
+                    <img src="{{ asset("images/$user->image") }} " class="m-1 rounded-circle" style="width: 20vw; height:20vw" alt="imageUtilisateur">
+                </div>
+                @endif
                 <div class="col pt-3">bienvenue sur le profil de <h2 class="text-warning">{{ $user->duckname }}</h1>
                 </div>
                 <div class="row mb-5">
