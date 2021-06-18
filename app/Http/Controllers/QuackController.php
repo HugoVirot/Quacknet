@@ -72,7 +72,7 @@ class QuackController extends Controller
 
     public function show(Quack $quack)
     {
-        return view('quack.show', ['quack' => $quack,]);
+        return view('quack.show', ['quack' => $quack]);
     }
 
 

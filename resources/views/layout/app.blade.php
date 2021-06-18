@@ -72,12 +72,10 @@
 <body class="text-center">
 
     <div class="container-fluid text-center">
-        <!-- ****************************AFFICHER MESSAGE SUCCES SUPPRESSION QUACK***********************************-->
         @if(session()->has('message'))
         <p class="alert alert-success">{{ session()->get('message') }}</p>
         @endif
 
-        <!-- **************************************************AFFICHAGE DES ERREURS****************************************-->
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

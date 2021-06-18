@@ -60,7 +60,7 @@ QuackNet - Accueil
                         </div>
                         <div class="col"># {{ $quack->tags }}
                         </div>
-                        @if ($quack->created_at !== $quack->updated_at)
+                        @if ($quack->created_at != $quack->updated_at)
                         <div class="col"> modifié le {{ $quack->updated_at }}</div>
                         @endif
                         <div class="col"> posté le {{ $quack->created_at }}</div>
