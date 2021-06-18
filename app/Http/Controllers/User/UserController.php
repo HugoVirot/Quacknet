@@ -43,7 +43,7 @@ class UserController extends Controller
         $user->nom = $request->input('nom');
 
         if ($request->input('password') !== null) {                 //si on a rentré un nouveau mdp
-            $request->validate(['password' => 'confirmed']);  //on le teste (si pas bon => erreur)
+            $request->validate(['password' => 'confirmed|min:8']);  //on le teste (si pas bon => erreur)
             // Password::min(8)
             // ->letters()
             // ->mixedCase()

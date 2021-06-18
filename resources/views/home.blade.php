@@ -131,25 +131,45 @@ QuackNet - Accueil
                 </div>
 
                 <!-- **********************************************AJOUTER UN COMMENTAIRE**********************************************-->
-                <form style="display:none;" id="formulairecommentaire{{$quack->id}}" class="col-12 mx-auto mb-2" action="{{ route('comments.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="content">Tapez votre message</label>
-                        <textarea required class="container-fluid" type="text" name="content" id="content"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"></div>
-                        <div class="col-4 form-group">
-                            <label for="nom">image (facultatif)</label>
-                            <input type="text" class="form-control" name="image" id="image">
+                <div style="display:none" class="col p-3 mb-2" id="formulairecommentaire{{$quack->id}}">
+                    <form action="{{ route('comments.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="content">Tape ton commentaire</label>
+                            <textarea required class="container" type="text" name="content" id="content"></textarea>
                         </div>
-                        <input class="form-control" type="hidden" id="quack_id" name="quack_id" value="{{$quack->id}}">
-                    </div>
-                    <button class="btn btn-danger" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'none'">
-                        Annuler
-                    </button>
-                    <button type="submit" class="btn btn-warning">Valider</button>
-                </form>
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4 form-group">
+                                <label for="nom">image (facultatif)</label>
+                                @if(Session::get('image'))
+                                <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
+                                @else
+                                <input type="text" class="form-control" name="image" id="image" placeholder="upload d'image ci-dessous">
+                                @endif                            </div>
+                            <input class="form-control" type="hidden" id="quack_id" name="quack_id" value="{{$quack->id}}">
+                        </div>
+                        <button class="btn btn-danger" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'none'">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn btn-warning">Valider</button>
+                    </form>
+
+                    <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row justify-content-center">
+                            <p class="mt-3">Uploader une image</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="file" name="image" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success">Upload</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <!--                ***************************************modifier le quack******************************-->
@@ -185,6 +205,9 @@ QuackNet - Accueil
                             </a>
                         </div>
                         <div class="col">posté le {{$comment->created_at}}</div>
+                        @if ($comment->created_at != $comment->updated_at)
+                        <div class="col"> modifié le {{ $comment->updated_at }}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
