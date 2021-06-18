@@ -10,6 +10,15 @@ QuackNet - Accueil
     <div class="row justify-content-center">
         <div class="col-md-10">
 
+            @if ($message = Session::get('success'))
+            <div class="container">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            </div>
+            @endif
+
             <div class="row justify-content-center p-5">
                 <div class="col-8">
                     <img class="mb-3" src="images/duck.png">
@@ -22,27 +31,47 @@ QuackNet - Accueil
             <!-- *************************************************AJOUTER UN QUACK**********************************************-->
 
             <div class="container">
-                <div class="row border rounded border-warning p-4 mb-5 justify-content-center">
+                <div class="row border rounded-pill border-warning p-4 mb-5 justify-content-center bg-warning">
                     <h3 class="mt-3">Ca se passe ici !</h3>
+
                     <form class="col-10 mx-auto m-4" action="{{ route('quacks.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="content">tape ton texte</label>
-                            <textarea required class="container-fluid" type="text" name="content" id="content"></textarea>
+                            <textarea required class="container-fluid" type="text" name="content" id="content" placeholder="salut les canards !"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="nom">choisis une image</label>
-                                <input type="text" class="form-control" name="image" id="image">
+                                <label for="nom">ton image</label>
+                                @if(Session::get('image'))
+                                <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
+                                @else
+                                <input type="text" class="form-control" name="image" id="image" placeholder="upload d'image ci-dessous">
+                                @endif
                             </div>
                             <div class="col-6 form-group">
                                 <label class="label">ajoute des tags</label>
                                 <div class="control">
-                                    <input class="form-control" type="text" name="tags">
+                                    <input class="form-control" type="text" name="tags" placeholder="canards">
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-warning mt-3">Quack !</button>
+                        <button type="submit" class="btn btn-primary mt-3">Quack !</button>
+                    </form>
+
+                    <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row justify-content-center">
+                            <p class="mt-3">Uploader une image</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="file" name="image" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success">Upload</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -170,7 +199,8 @@ QuackNet - Accueil
                         <div class="col">
                             <a href="{{ route('comments.edit', $comment) }}">
                                 <button class="btn btn-secondary">Modifier</button>
-                            </a></div>
+                            </a>
+                        </div>
                         @endcan
                         @can('delete', $comment)
                         <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->

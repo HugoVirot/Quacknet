@@ -69,6 +69,6 @@ class UserController extends Controller
     {
         // $user->load('quacks.comments.user');
         $user->load('quacks');
-        return view('user.profil', ['user' => $user]);
+        return view('user.profil', compact('user'));
     }
 }
