@@ -46,6 +46,7 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|min:5',
             'image' => '',
+            'tags' => ''
         ]);
 
         $user = Auth::user();
@@ -55,6 +56,7 @@ class CommentController extends Controller
         $comment->quack_id = $request->input('quack_id');
         $comment->content = $request->input('content');
         $comment->image = $request->input('image');
+        $comment->tags = $request->input('tags');
         $comment->save();
 
         return redirect()->route('home');
@@ -101,13 +103,12 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|min:5',
             'image' => 'present',
+            'tags' => 'present'
         ]);
 
         $comment->content = $request->input('content');
-        if ($request->input('image') !== null) {
-            $comment->image = $request->input('image');
-        }
-
+        $comment->image = $request->input('image');
+        $comment->tags = $request->input('tags');
         $comment->save();
         return redirect()->route('home')->with('message', 'Le commentaire a bien été modifié');
     }

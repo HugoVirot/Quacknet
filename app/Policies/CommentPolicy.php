@@ -48,7 +48,10 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        //
+        if (Auth::user())
+        {
+            return true;
+        }
     }
 
     /**

@@ -35,7 +35,6 @@ class UserController extends Controller
         $request->validate([ 
             'prenom' => 'required|min:3|max:50',
             'nom' => 'required|min:3|max:50',
-            'image' => 'required|string',
             'password' => 'present' 
         ]);
 

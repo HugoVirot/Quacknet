@@ -20,6 +20,10 @@ QuackNet - Modifier un commentaire
                     <input required type="text" class="form-control" name="content" value="{{ $comment->content }}" id="content">
                 </div>
                 <div class="form-group">
+                    <label for="tags">Nouveau(x) tag(s)</label>
+                    <input type="text" class="form-control" name="tags" value="{{ $comment->tags }}" id="tags">
+                </div>
+                <div class="form-group">
                     <label for="image">Nouvelle image</label>
                     @if(Session::get('image'))
                     <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">

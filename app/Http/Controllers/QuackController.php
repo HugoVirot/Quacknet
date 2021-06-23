@@ -130,7 +130,7 @@ class QuackController extends Controller
     public function search(Request $request)
     {
         $request->validate([
-            'q' => 'required',
+            'q' => 'required|max:20',
         ]);
 
         $recherche = $request->input('q');
@@ -140,9 +140,12 @@ class QuackController extends Controller
             ->where('quacks.tags', 'like', "%$recherche%")
             ->orWhere('quacks.content', 'like', "%$recherche%")
             ->join('users', 'quacks.user_id', '=', 'users.id')
-            // ->leftJoin('comments', 'quacks.id', '=', 'comments.quack_id')
-            // ->select('users.*', 'quacks.*', 'comments.content as commentcontent')
+            // ->join('comments', 'quacks.id', '=', 'comments.quack_id')
+            // ->join('users as commentusers', 'comments.user_id', '=', 'commentusers.id')
+            // ->select('users.*', 'quacks.*', 'comments.content as commentcontent', 'comments.tags as commenttags', 'comments.user_id as commentuserid', 
+            // 'commentusers.duckname as commentuserduckname', 'commentusers.image as commentuserimage')
             ->get();
+
         return view('quack.searchresults', ['quacks' => $quacks]);
     }
 }

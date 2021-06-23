@@ -16,18 +16,21 @@ Mon compte
                 <label for="prenom">Nouveau prénom</label>
                 <input required type="text" class="form-control" placeholder="modifier" name="prenom" value="{{ $user->prenom }}" id="prenom">
             </div>
+
             <div class="form-group">
                 <label for="nom">Nouveau nom</label>
                 <input required type="text" class="form-control" name="nom" value="{{ $user->nom }}" id="nom">
             </div>
+
             <div class="form-group">
                 <label for="image">Nouvelle image (upload ci-dessous)</label>
                 @if(Session::get('image'))
-                <input required type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
+                <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
                 @else
-                <input required type="text" class="form-control" name="image" id="image"  value="{{ $user->image }}">
+                <input type="text" class="form-control" name="image" id="image"  placeholder="upload d'images ci-dessous">
                 @endif
             </div>
+
             <div class="form-group">
                 <label class="label">Nouveau mot de passe</label>
                 <div class="control">
@@ -37,6 +40,7 @@ Mon compte
                 <p class="help is-danger">{{ $errors->first('password') }}</p>
                 @endif
             </div>
+
             <div class="form-group">
                 <label class="label">Confirmez le mot de passe</label>
                 <div class="control">
@@ -49,6 +53,7 @@ Mon compte
                 <p class="help is-danger">{{ $errors->first('password_error') }}</p>
                 @endif
             </div>
+            
             <button type="submit" class="btn btn-primary">Valider</button>
         </form>
     </div>

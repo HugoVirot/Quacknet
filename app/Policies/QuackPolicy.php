@@ -63,6 +63,10 @@ class QuackPolicy
      * @return mixed
      */
 
+    public function update(User $user, Quack $quack)
+    {
+        return $user->id === $quack->user_id;
+    }
 
     /**
      * Determine whether the user can delete the quack.
