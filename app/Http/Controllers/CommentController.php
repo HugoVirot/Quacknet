@@ -45,8 +45,6 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|min:5',
-            'image' => '',
-            'tags' => ''
         ]);
 
         $user = Auth::user();
@@ -60,20 +58,6 @@ class CommentController extends Controller
         $comment->save();
 
         return redirect()->route('home');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Quack $quack
-     * @return \Illuminate\Http\Response
-     */
-
-    public function show(Comment $comment)
-    {
-        $comment->load(['user', 'comments.user']);
-
-        return view('quack.show', ['quack' => $comment]);
     }
 
 
@@ -102,8 +86,6 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|min:5',
-            'image' => 'present',
-            'tags' => 'present'
         ]);
 
         $comment->content = $request->input('content');

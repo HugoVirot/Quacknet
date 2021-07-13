@@ -15,10 +15,12 @@ QuackNet - Zoom sur le Quack
                     </a>
                 </div>
                 <div class="col">#{{ $quack->tags }}</div>
-                @if ($quack->created_at != $quack->updated_at)
-                <div class="col"> modifié le {{ $quack->updated_at }}</div>
-                @endif
-                <div class="col"> posté le {{ $quack->created_at }}</div>
+                <div class="col m-auto">
+                    <div class="row">posté le {{date('d/m/Y à H:i', strtotime($quack->created_at))}}</div>
+                    @if ($quack->created_at != $quack->updated_at)
+                    <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($quack->updated_at))}}</div>
+                    @endif
+                </div>
             </div>
         </div>
         @if (isset ($quack->image))
@@ -92,14 +94,22 @@ QuackNet - Zoom sur le Quack
         <div class="card-header text-light bg-primary">
             <div class="row">
                 <div class="col">{{$comment->user->duckname}}</div>
-                <div class="col">posté le {{$comment->created_at}}</div>
+                @if($comment->tags)
+                <div class="col">#{{$comment->tags}}</div>
+                @endif
+                <div class="col m-auto">
+                    <div class="row">posté le {{date('d/m/Y à H:i', strtotime($comment->created_at))}}</div>
+                    @if ($comment->created_at != $comment->updated_at)
+                    <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($comment->updated_at))}}</div>
+                    @endif
+                </div>
             </div>
         </div>
         <div class="card-body">
             {{ $comment->content }}
-            @if (isset ($comment->image))
+            @if ($comment->image !== null)
             <div class="card-img p-3">
-                <img style="width: 15vw" src="{{ asset("images/$quack->image") }}" alt="imageQuack">
+                <img style="width: 15vw" src="{{ asset("images/$comment->image") }}" alt="imageQuack">
             </div>
             @endif
             <div class="row mb-2">
@@ -107,7 +117,8 @@ QuackNet - Zoom sur le Quack
                 <div class="col">
                     <a href="{{ route('comments.edit', $comment) }}">
                         <button class="btn btn-secondary">Modifier</button>
-                    </a></div>
+                    </a>
+                </div>
                 @endcan
                 @can('delete', $comment)
                 <!--            si l'utilisateur connecté est l'auteur du quack ou du commentaire, il peut supprimer le commentaire -->

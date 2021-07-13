@@ -21,9 +21,10 @@ class CreateQuacksTable extends Migration
             $table->string('image')->nullable();
             $table->string('tags');
             $table->timestamps();
-            $table->softDeletes();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->engine = 'InnoDB';
         });
     }
 

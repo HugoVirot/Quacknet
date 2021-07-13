@@ -21,7 +21,7 @@ class ImageUploadController extends Controller
         // public/images/file.png
 
         return back()
-            ->with('success', 'Ton image a bien été uploadée !')
+            ->with('message', 'Ton image a bien été uploadée !')
             ->with('image', $imageName);
     }
 }

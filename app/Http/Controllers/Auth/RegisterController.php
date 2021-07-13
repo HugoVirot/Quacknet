@@ -53,8 +53,10 @@ class RegisterController extends Controller
             'nom' => ['required', 'string', 'max:255'],
             'duckname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            //'image' => 'string'
+            'password' => [
+                'required', 'confirmed', 'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/'
+            ]
         ]);
     }
 

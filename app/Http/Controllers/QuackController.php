@@ -34,8 +34,6 @@ class QuackController extends Controller
     {
         $request->validate([
             'content' => 'required|min:5',
-            'image' => '',
-            'tags' => '',
         ]);
 
         $user = Auth::user();
@@ -88,19 +86,12 @@ class QuackController extends Controller
     public function update(Request $request, Quack $quack)
     {
         $request->validate([
-            'content' => 'required|min:5',
-            'image' => 'present',
-            'tags' => 'present',
+            'content' => 'required|min:5'
         ]);
 
         $quack->content = $request->input('content');
-        
-        if ($request->input('image') !== null) {
-            $quack->image = $request->input('image');
-        }
-        if ($request->input('tags') !== null) {
-            $quack->tags = $request->input('tags');
-        }
+        $quack->image = $request->input('image');
+        $quack->tags = $request->input('tags');
 
         $quack->save();
         return redirect()->route('home')->with('message', 'Le Quack a bien été modifié');
@@ -140,9 +131,10 @@ class QuackController extends Controller
             ->where('quacks.tags', 'like', "%$recherche%")
             ->orWhere('quacks.content', 'like', "%$recherche%")
             ->join('users', 'quacks.user_id', '=', 'users.id')
+            ->select('quacks.*', 'users.image as userimage', 'users.duckname')
             // ->join('comments', 'quacks.id', '=', 'comments.quack_id')
             // ->join('users as commentusers', 'comments.user_id', '=', 'commentusers.id')
-            // ->select('users.*', 'quacks.*', 'comments.content as commentcontent', 'comments.tags as commenttags', 'comments.user_id as commentuserid', 
+            //->select('users.*', 'quacks.*', 'comments.content as commentcontent', 'comments.tags as commenttags', 'comments.user_id as commentuserid', 
             // 'commentusers.duckname as commentuserduckname', 'commentusers.image as commentuserimage')
             ->get();
 

@@ -17,16 +17,17 @@ class CreateCommentsTable extends Migration
 
         Schema::create('comments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quack_id');
+            $table->unsignedBigInteger('quack_id');
             $table->text('content');
             $table->text('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('tags')->nullable();
             $table->timestamps();
-            $table->softDeletes();
             
-            $table->foreign('quack_id')->references('id')->on('quacks');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('quack_id')->references('id')->on('quacks')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->engine = 'InnoDB';
         });
     }
 

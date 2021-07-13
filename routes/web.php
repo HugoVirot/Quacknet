@@ -31,11 +31,12 @@ Route::resource('/quacks', 'QuackController')->except('index');
 // routes crud commentaires
 Route::resource('/comments', 'CommentController')->except('index'); 
 
-// profil utilisateur : afficher / modifier / valider modif
+// profil utilisateur : afficher / modifier / valider modif / supprimer le compte
 Route::get('users/{user}', 'User\UserController@profil')->name('user.profil');
 Route::get('settings/account', 'User\UserController@index')->name('user.account');
 Route::get('settings/account/edit', 'User\UserController@edit')->name('user.account.edit');
 Route::put('settings/account/update', 'User\UserController@update')->name('user.account.update');
+Route::delete('users/{user}/destroy', 'User\UserController@destroy')->name('user.destroy');
 
 // uploader une image
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');

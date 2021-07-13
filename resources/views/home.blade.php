@@ -37,12 +37,12 @@ QuackNet - Accueil
                     <form class="col-10 mx-auto m-4" action="{{ route('quacks.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="content">tape ton texte</label>
+                            <i class="fas fa-pen-fancy text-primary fa-2x"></i><label for="content">&nbspécris un truc sympa (ou pas !)</label>
                             <textarea required class="container-fluid" type="text" name="content" id="content" placeholder="salut les canards !"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="nom">ton image</label>
+                                <i class="fas fa-camera-retro text-primary fa-2x"></i><label for="nom">&nbspajoute une image</label>
                                 @if(Session::get('image'))
                                 <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
                                 @else
@@ -50,9 +50,9 @@ QuackNet - Accueil
                                 @endif
                             </div>
                             <div class="col-6 form-group">
-                                <label class="label"># ajoute des tags #</label>
+                                <i class="fas fa-hashtag text-primary fa-2x"></i><label class="label">ajoute des tags</label>
                                 <div class="control">
-                                    <input class="form-control" type="text" name="tags" placeholder="canards">
+                                    <input class="form-control" type="text" name="tags" placeholder="salut">
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ QuackNet - Accueil
                     <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row justify-content-center">
-                            <p class="mt-3">Uploader une image</p>
+                            <p class="mt-3"><i class="fas fa-upload fa-2x text-primary"></i>&nbspUploade ton image ici (max : 2 Mo)</p>
                         </div>
                         <div class="row">
                             <div class="col-md-9">
@@ -116,7 +116,7 @@ QuackNet - Accueil
                     <p>{{ $quack->content }}</p>
                     <a href="{{ route('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
-                    <!-- **************************************OPTIONS : MASQUER, MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
+                    <!-- **************************************OPTIONS : MODIFIER, COMMENTER ET SUPPRIMER******************************************-->
                     <div class="row mt-2">
                         <div class="col"><a class="btn btn-info" onclick="document.getElementById('formulairecommentaire{{$quack->id}}').style.display = 'block'">Commenter
                             </a>
@@ -159,9 +159,9 @@ QuackNet - Accueil
                             <div class="col-4 form-group">
                                 <label for="nom">image (facultatif)</label>
                                 @if(Session::get('image'))
-                                <input type="text" class="form-control" name="image" id="image" value="{{ Session::get('image') }}">
+                                <input type="text" class="form-control" name="image" id="image" readonly="readonly" value="{{ Session::get('image') }}">
                                 @else
-                                <input type="text" class="form-control" name="image" id="image" placeholder="upload d'image ci-dessous">
+                                <input type="text" class="form-control" name="image" id="image" readonly="readonly" placeholder="upload d'image ci-dessous">
                                 @endif
                             </div>
                             <input class="form-control" type="hidden" id="quack_id" name="quack_id" value="{{$quack->id}}">
@@ -217,7 +217,7 @@ QuackNet - Accueil
 
                 <div class="card-header bg-primary text-light">
                     <div class="row">
-                    <div class="col">
+                        <div class="col">
                             @if($comment->user->image)
                             <img class="m-1 rounded-circle" style="width: 3vw; height:3vw" src="images/{{ $comment->user->image }}" alt="imageUtilisateur">
                             @else
@@ -272,10 +272,13 @@ QuackNet - Accueil
             </div>
         </div>
         @endforeach
+
         @endforeach
+
         <div class="col-md-2 offset-md-5">
-        {{ $quacks->links() }}
+            {{ $quacks->links() }}
         </div>
+
     </div>
 </div>
 </div>

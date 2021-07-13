@@ -18,50 +18,54 @@ profil
                 </div>
                 <div class="col pt-3">bienvenue sur le profil de <h1 class="font-weight-bold text-warning">{{ $user->duckname }}</h1>
                 </div>
-                <div class="row mb-2">
-                    <div class="col">alias <b>{{ $user->prenom }} {{ $user->nom }}<b></div>
-                </div>
 
-                <div class="row justify-content-center">
-                    <div>inscrit(e) le {{ date('d-m-Y', strtotime($user->created_at)) }} - {{ count($user->quacks) }} quack(s) postés </div>
+                <div class="container w-25">
+                    <div class="row p-2 justify-content-between">
+                        <i class="fas fa-user fa-2x text-primary"></i> alias {{ $user->prenom }} {{ $user->nom }}
+                    </div>
+                    <div class="row p-2 justify-content-between">
+                        <i class="fas fa-arrow-alt-circle-right fa-2x text-primary"></i> inscrit(e) le {{ date('d-m-Y', strtotime($user->created_at)) }}
+                    </div>
+                    <div class="row p-2 justify-content-between">
+                    <i class="fas fa-comments fa-2x text-primary"></i>{{ count($user->quacks) }} quack(s) posté(s)
+                    </div>
                 </div>
-
                 <!-- ***********************************AFFICHER LES QUACKS*****************************-->
 
                 @foreach ($user->quacks as $quack)
                 <div class="card mb-4 mt-5 pb-2">
-                <div class="card-header bg-warning">
-                    <div class="row">
-                        <div class="col">
-                            @if($user->image)
-                            <img class="m-1 rounded-circle" style="width: 5vw; height:5vw" src="{{ asset("images/$user->image") }}" alt="imageUtilisateur">
-                            @else
-                            <img class="m-1 rounded-circle" style="width: 5vw; height:5vw" src="images/default_user.jpg" alt="imageUtilisateur">
-                            @endif
-                            <h5><a href="{{ route ('user.profil', $quack->user_id) }}">
-                                    <strong>{{ $user->duckname }}</strong>
-                                </a>
-                            </h5>
-                        </div>
-                        <div class="col m-auto">
-                            <h4>#{{ $quack->tags }} </h4>
-                        </div>
-                        <div class="col m-auto">
-                            <div class="row">posté le {{date('d/m/Y à H:i', strtotime($quack->created_at))}}</div>
-                            @if ($quack->created_at != $quack->updated_at)
-                            <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($quack->updated_at))}}</div>
-                            @endif
+                    <div class="card-header bg-warning">
+                        <div class="row">
+                            <div class="col">
+                                @if($user->image)
+                                <img class="m-1 rounded-circle" style="width: 5vw; height:5vw" src="{{ asset("images/$user->image") }}" alt="imageUtilisateur">
+                                @else
+                                <img class="m-1 rounded-circle" style="width: 5vw; height:5vw" src="{{ asset('images/default_user.jpg')}} alt="imageUtilisateur">
+                                @endif
+                                <h5><a href="{{ route ('user.profil', $quack->user_id) }}">
+                                        <strong>{{ $user->duckname }}</strong>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div class="col m-auto">
+                                <h4>#{{ $quack->tags }} </h4>
+                            </div>
+                            <div class="col m-auto">
+                                <div class="row">posté le {{date('d/m/Y à H:i', strtotime($quack->created_at))}}</div>
+                                @if ($quack->created_at != $quack->updated_at)
+                                <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($quack->updated_at))}}</div>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-                @if (($quack->image !== null))
-                <div class="card-img p-3">
-                    <img class="m-1" style="width: 45vw" src="{{ asset("images/$quack->image") }}" alt="imageQuack">
-                </div>
-                @endif
-                <div class="card-body ml-5 mr-5">
-                    <p>{{ $quack->content }}</p>
-                    <a href="{{ route('quacks.show', $quack) }}">Zoom sur ce quack</a>
+                    @if (($quack->image !== null))
+                    <div class="card-img p-3">
+                        <img class="m-1" style="width: 45vw" src="{{ asset("images/$quack->image") }}" alt="imageQuack">
+                    </div>
+                    @endif
+                    <div class="card-body ml-5 mr-5">
+                        <p>{{ $quack->content }}</p>
+                        <a href="{{ route('quacks.show', $quack) }}">Zoom sur ce quack</a>
 
 
 
