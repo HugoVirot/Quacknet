@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Quack;
 use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
 
 class QuackController extends Controller
 {
@@ -19,7 +17,7 @@ class QuackController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['search', 'show']);
+        $this->middleware('auth');
     }
 
 
@@ -32,13 +30,18 @@ class QuackController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
-            'content' => 'required|min:5',
+            'content' => 'required|min:5|max:500',
+            'tags' => 'required|min:3|max:50',
         ]);
 
         $user = Auth::user();
 
         $quack = new Quack;
+
+        $this->authorize('create', $quack);
+
         $quack->user_id = $user->id;
         $quack->content = $request->input('content');
         $quack->image = $request->input('image');
@@ -85,8 +88,11 @@ class QuackController extends Controller
 
     public function update(Request $request, Quack $quack)
     {
+        $this->authorize('update', $quack);
+
         $request->validate([
-            'content' => 'required|min:5'
+            'content' => 'required|min:5|max:500',
+            'tags' => 'min:3|max:50',
         ]);
 
         $quack->content = $request->input('content');
@@ -109,12 +115,9 @@ class QuackController extends Controller
 
     public function destroy(Quack $quack)
     {
-        if (Auth::user()->id == $quack->user_id || Auth::user()->roles_id == 2) {
-            $quack->delete();
-            return redirect()->route('home')->with('message', 'Le quack a bien été supprimé');
-        } else {
-            return redirect()->back()->withErrors(['erreur' => 'suppression impossible']);
-        }
+        $this->authorize('delete', $quack);
+        $quack->delete();
+        return redirect()->route('home')->with('message', 'Le quack a bien été supprimé');
     }
 
 
@@ -126,17 +129,10 @@ class QuackController extends Controller
 
         $recherche = $request->input('q');
 
-        // $quacks = DB::select('select * from quacks where tags like ?', ["%" . $recherche . "%"]);
-        $quacks = DB::table('quacks')
-            ->where('quacks.tags', 'like', "%$recherche%")
+        $quacks = Quack::where('quacks.tags', 'like', "%$recherche%")
             ->orWhere('quacks.content', 'like', "%$recherche%")
-            ->join('users', 'quacks.user_id', '=', 'users.id')
-            ->select('quacks.*', 'users.image as userimage', 'users.duckname')
-            // ->join('comments', 'quacks.id', '=', 'comments.quack_id')
-            // ->join('users as commentusers', 'comments.user_id', '=', 'commentusers.id')
-            //->select('users.*', 'quacks.*', 'comments.content as commentcontent', 'comments.tags as commenttags', 'comments.user_id as commentuserid', 
-            // 'commentusers.duckname as commentuserduckname', 'commentusers.image as commentuserimage')
-            ->get();
+            ->with('user', 'comments.user')
+            ->latest()->paginate(10);
 
         return view('quack.searchresults', ['quacks' => $quacks]);
     }

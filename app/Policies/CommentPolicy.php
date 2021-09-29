@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\User;
 use App\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Auth;
 
 class CommentPolicy
 {
@@ -15,29 +16,6 @@ class CommentPolicy
         if ($user->isAdmin()) {
             return true;
         }
-    }
-
-    /**
-     * Determine whether the user can view any comments.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the comment.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Comment  $comment
-     * @return mixed
-     */
-    public function view(User $user, Comment $comment)
-    {
-        //
     }
 
     /**
@@ -75,32 +53,8 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        if (($user->id === $comment->user_id)|| ($user->id === $comment->quack->user_id)){
+        if ($user->id === $comment->user_id || $user->id === $comment->quack->user_id){
             return true;
         }
-    }
-
-    /**
-     * Determine whether the user can restore the comment.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Comment  $comment
-     * @return mixed
-     */
-    public function restore(User $user, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the comment.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Comment  $comment
-     * @return mixed
-     */
-    public function forceDelete(User $user, Comment $comment)
-    {
-        //
     }
 }

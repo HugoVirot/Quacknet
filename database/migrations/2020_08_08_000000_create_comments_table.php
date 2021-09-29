@@ -26,8 +26,6 @@ class CreateCommentsTable extends Migration
             
             $table->foreign('quack_id')->references('id')->on('quacks')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->engine = 'InnoDB';
         });
     }
 

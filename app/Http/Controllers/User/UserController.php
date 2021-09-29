@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('user.accountupdatepage', ['user' => $user]);
+        return view('user.edit', ['user' => $user]);
     }
 
     public function update(Request $request)      //permet de valider les modifs
@@ -39,35 +40,52 @@ class UserController extends Controller
         $user->prenom = $request->input('prenom');         //on insère ainsi les nouvelles données
         $user->nom = $request->input('nom');
         $user->image = $request->input('image');
-
-        if ($request->input('password') !== null) {                 $//si on a rentré un nouveau mdp
-            $request->validate([  //on le teste (si pas bon => erreur)
-                'password' => [
-                    'required',
-                    'confirmed',
-                    'min:8',
-                    'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/'
-                ]
-            ]);
-
-            $oldpassword = $user->password;
-            $newpassword = $request->input('password');
-
-            if (Hash::check($newpassword, $oldpassword)) {          //si nouveau et ancien mdp identiques => erreur
-                return redirect()->route('user.account.edit')->withErrors(['password_error', 'ancien et nouveau mot de passe identiques !']);
-            } else {
-                $user->password = Hash::make($newpassword);                //si ok, on le sauvegarde en bdd
-            }
-        }
-
         $user->save();
 
         return redirect()->route('user.account')->with('message', 'Le compte a bien été modifié');
     }
 
+
+    public function updatePassword(Request $request)      //permet de valider les modifs
+    {
+        $request->validate([
+            'password' => 'required',
+            'newPassword' => [
+                'required', 'confirmed', 'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/'
+                // nouvelle syntaxe (laravel 8 uniquement)
+                // Password::min(8) // minimum 8 caractères
+                //     ->mixedCase() // Require at least one uppercase and one lowercase letter...
+                //     ->letters()  // Require at least one letter...
+                //     ->numbers() // Require at least one number...
+                //     ->symbols() // Require at least one symbol...
+            ],
+        ]);
+
+        $user = Auth::user();
+        $currentTypedPassword = $request->input('password');
+        $currentHashedPassword = $user->password;
+        $newpassword = $request->input('newpassword');
+
+        // test 1) : mot de passe actuel saisi = mot de passe actuel bdd
+        if (Hash::check($currentTypedPassword, $currentHashedPassword)) {
+
+            // test 2) : si ancien et nouveau mdp différents => ok, sinon => erreur
+            if ($currentTypedPassword !== $newpassword) {
+
+                $user->password = Hash::make($newpassword);
+                $user->save();
+                return redirect()->route('user.account')->with('message', 'Le compte a bien été modifié');
+            } else {
+                return redirect()->route('user.account.edit')->withErrors(['password_error', 'ancien et nouveau mot de passe identiques !']);
+            }
+        } else {
+            return redirect()->route('user.account.edit')->withErrors(['password_error', 'mot de passe actuel saisi incorrect !']);
+        }
+    }
+
     public function profil(User $user)
     {
-        // $user->load('quacks.comments.user');
         $user->load('quacks');
         return view('user.profil', compact('user'));
     }

@@ -100,9 +100,9 @@ QuackNet - Accueil
                             <h4>#{{ $quack->tags }} </h4>
                         </div>
                         <div class="col m-auto">
-                            <div class="row">posté le {{date('d/m/Y à H:i', strtotime($quack->created_at))}}</div>
+                            <div class="row">posté {{$quack->created_at->diffForHumans()}}</div>
                             @if ($quack->created_at != $quack->updated_at)
-                            <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($quack->updated_at))}}</div>
+                            <div class="row">modifié {{$quack->updated_at->diffForHumans()}}</div>
                             @endif
                         </div>
                     </div>
@@ -234,9 +234,9 @@ QuackNet - Accueil
                             @endif
                         </div>
                         <div class="col m-auto">
-                            <div class="row">posté le {{date('d/m/Y à H:i', strtotime($comment->created_at))}}</div>
+                            <div class="row">posté {{$quack->created_at->diffForHumans()}}</div>
                             @if ($comment->created_at != $comment->updated_at)
-                            <div class="row">modifié le {{date('d/m/Y à H:i', strtotime($comment->updated_at))}}</div>
+                            <div class="row">modifié {{$quack->updated_at->diffForHumans()}}</div>
                             @endif
                         </div>
                     </div>

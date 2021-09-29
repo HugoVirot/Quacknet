@@ -16,8 +16,6 @@ Route::get('/', 'HomeController@index')->name('index');
 
 // accueil / liste des quacks
 Route::get('/home', 'HomeController@home')->name('home');
-// envoyer image en post
-Route::post('/home', 'HomeController@home')->name('home'); 
 
 //ensemble des routes de l'authentification
 Auth::routes();  
@@ -36,7 +34,11 @@ Route::get('users/{user}', 'User\UserController@profil')->name('user.profil');
 Route::get('settings/account', 'User\UserController@index')->name('user.account');
 Route::get('settings/account/edit', 'User\UserController@edit')->name('user.account.edit');
 Route::put('settings/account/update', 'User\UserController@update')->name('user.account.update');
+Route::put('settings/password/update', 'User\UserController@updatePassword')->name('user.password.update');
 Route::delete('users/{user}/destroy', 'User\UserController@destroy')->name('user.destroy');
 
-// uploader une image
+// envoyer image en post
+Route::post('/home', 'HomeController@home')->name('home'); 
+
+// valider l'upload d'une image
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');

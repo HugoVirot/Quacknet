@@ -18,19 +18,7 @@ class CommentController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['search', 'show']);
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function create()
-    {
-        return view('quack.create');
+        $this->middleware('auth');
     }
 
 
@@ -50,6 +38,9 @@ class CommentController extends Controller
         $user = Auth::user();
 
         $comment = new Comment;
+
+        $this->authorize('create', $comment);
+
         $comment->user_id = $user->id;
         $comment->quack_id = $request->input('quack_id');
         $comment->content = $request->input('content');
@@ -84,6 +75,8 @@ class CommentController extends Controller
 
     public function update(Request $request, Comment $comment)
     {
+        $this->authorize('update', $comment);
+
         $request->validate([
             'content' => 'required|min:5',
         ]);
@@ -106,11 +99,8 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        if (Auth::user()->id == $comment->user_id || Auth::user()->roles_id == 2) {
-            $comment->delete();
-            return redirect()->route('home')->with('commentaire', 'Le quack a bien été supprimé');
-        } else {
-            return redirect()->back()->withErrors(['erreur' => 'suppression impossible']);
-        }
+        $this->authorize('delete', $comment);
+        $comment->delete();
+        return redirect()->route('home')->with('commentaire', 'Le quack a bien été supprimé');
     }
 }

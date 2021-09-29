@@ -34,7 +34,8 @@ class HomeController extends Controller
         // récupère tous les quacks avec leurs commentaires 
         // ('comments' =  dans le modèle Quack, nom de la fonction qui spécifie la relation)
         //$quacks = Quack::with('comments')->latest()->get();
-        $quacks = Quack::orderByDesc('created_at')->paginate(10);
+        $quacks = Quack::orderByDesc('created_at')->latest()->paginate(10);
         return view('home', ['quacks' => $quacks]);
+        //return view('home', compact('quacks'));
     }
 }
