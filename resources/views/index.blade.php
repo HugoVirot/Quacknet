@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content') 
     <div class="container-fluid text-center">
         @if (session()->has('message'))
             <p class="alert alert-success">{{ session()->get('message') }}</p>
