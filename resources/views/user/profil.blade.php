@@ -1,7 +1,7 @@
 @extends ('layouts.app')
 
 @section('title')
-    profil
+    Profil de {{ $user->pseudo }}
 @endsection
 
 @section('content')
@@ -139,22 +139,22 @@
                         <!--                ***************************************modifier le quack******************************-->
 
                         <!-- <form style="display:none;" id="formulairecommentaire{{ $quack->id }}" class="col-12 mx-auto mb-2" action="{{ route('quacks.update', $quack) }}" method="POST">
-                            @method('put')
-                            @csrf
-                            <div class="form-group">
-                                <label for="content">Nouveau texte</label>
-                                <input required type="text" class="form-control" name="content" value="{{ $quack->content }}" id="content">
-                            </div>
-                            <div class="form-group">
-                                <label for="image">Nouvelle image</label>
-                                <input type="text" class="form-control" name="image" value="{{ $quack->image }}" id="image">
-                            </div>
-                            <div class="form-group">
-                                <label for="tags">Nouveaux tags</label>
-                                <input type="text" class="form-control" name="tags" value="{{ $quack->tags }}" id="tags">
-                                <button type="submit" class="btn btn-primary">Valider</button>
-                            </div>
-                        </form> -->
+                                @method('put')
+                                @csrf
+                                <div class="form-group">
+                                    <label for="content">Nouveau texte</label>
+                                    <input required type="text" class="form-control" name="content" value="{{ $quack->content }}" id="content">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Nouvelle image</label>
+                                    <input type="text" class="form-control" name="image" value="{{ $quack->image }}" id="image">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tags">Nouveaux tags</label>
+                                    <input type="text" class="form-control" name="tags" value="{{ $quack->tags }}" id="tags">
+                                    <button type="submit" class="btn btn-primary">Valider</button>
+                                </div>
+                            </form> -->
 
                         <!-- ********************************************* AFFICHER LES COMMENTAIRES **********************************************-->
 

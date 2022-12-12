@@ -9,13 +9,16 @@ class Comment extends Model
 {
     use HasFactory;
 
+    // nom de la fonction au singulier car 1 seul message en relation
+    // cardinalité 1,1
     public function quack()
     {
-        return $this->belongsTo('app\Models\Quack');
+        return $this->belongsTo(Quack::class);
     }
 
+    // idem
     public function user()
     {
-        return $this->belongsTo('app\Models\User');
+        return $this->belongsTo(User::class);
     }
 }

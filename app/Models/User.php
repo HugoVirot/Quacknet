@@ -37,19 +37,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // nom au pluriel car un user peut poster plusieurs quacks
+    // cardinalité 0,n
     public function quacks()
     {
-        return $this->hasMany('app\Models\Quack');
+        return $this->hasMany(Quack::class);
     }
 
+    // nom au pluriel car un user peut poster plusieurs commentaires
+    // cardinalité 0,n
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->hasMany(Comment::class);
     }
 
+    // nom de la fonction au singulier car 1 seul rôle en relation
+    // cardinalité 1,1
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo(Role::class);
     }
 
     public function isAdmin()

@@ -11,9 +11,7 @@
         @if (count($quacks) == 0)
             <img style="width: 25vw" src="/images/lost_duck.jpg" alt="lost duck">
             <h5 class="p-4">Aucun quack ne correspond à votre recherche...</h5>
-
         @else
-
             @foreach ($quacks as $quack)
                 <div class="card mb-4 mt-5 pb-2">
                     <div class="card-header bg-warning">
@@ -31,7 +29,7 @@
                                 </h5>
                             </div>
                             <div class="col m-auto">
-                                <h4>#{{ $quack->tags }} </h4>
+                                <h4>#{{ implode(' #', explode(' ', $quack->tags)) }} </h4>
                             </div>
                             <div class="col m-auto">
                                 <div class="row">posté {{ $quack->created_at->diffForHumans() }}</div>
@@ -61,11 +59,11 @@
                                 <div class="row">
                                     <div class="col">
                                         {{-- @if ($comment->user->image !== null) --}}
-                                            {{-- <img class="m-1 rounded-circle" style="width: 3vw; height:3vw"
+                                        {{-- <img class="m-1 rounded-circle" style="width: 3vw; height:3vw"
                                                 src="images/{{ $comment->user->image }}" alt="imageUtilisateur">
                                         @else --}}
-                                            <img class="m-1 rounded-circle" style="width: 3vw; height:3vw"
-                                                src="{{ asset("images/default_user.jpg") }}" alt="imageUtilisateur">
+                                        <img class="m-1 rounded-circle" style="width: 3vw; height:3vw"
+                                            src="{{ asset('images/default_user.jpg') }}" alt="imageUtilisateur">
                                         {{-- @endif --}}
                                         <h5><a style="text-decoration: none;" class="text-warning"
                                                 href="{{ route('user.profil', $comment->user_id) }}">
@@ -75,7 +73,7 @@
                                     </div>
                                     <div class="col m-auto">
                                         @if ($comment->tags !== null)
-                                            <h5>#{{ $comment->tags }} </h5>
+                                            <h5>#{{ implode(' #', explode(' ', $comment->tags)) }} </h5>
                                         @endif
                                     </div>
                                     <div class="col m-auto">
@@ -93,7 +91,8 @@
                                 {{ $comment->content }}
                                 @if ($comment->image !== null)
                                     <div class="card-img p-3">
-                                        <img style="width: 15vw" src="{{ asset("images/$comment->image") }}" alt="imageComment">
+                                        <img style="width: 15vw" src="{{ asset("images/$comment->image") }}"
+                                            alt="imageComment">
                                     </div>
                                 @endif
                                 <div class="row mb-2">
@@ -119,9 +118,7 @@
                         </div>
                     </div>
                 @endforeach
-
             @endforeach
-
         @endif
     </div>
 

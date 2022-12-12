@@ -30,29 +30,37 @@ class QuackController extends Controller
 
     public function store(Request $request)
     {
+        // on valide les infos du formulaire en précisant les critères attendus
         $request->validate([
             'content' => 'required|min:5|max:500',
             'tags' => 'required|min:3|max:50',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        // on donne un nom à l'image : timestamp en temps unix + extension
-        $imageName = time() . '.' . $request->image->extension();
-    
-        // on déplace l'image dans public/images
-        $request->image->move(public_path('images'), $imageName);
 
-        $user = Auth::user();
+        $user = Auth::user(); // on récupère l'utilisateur connecté
+ 
+        // *********** syntaxe 1 ******************
+        $quack = new Quack; // on créé un nouveau message
 
-        $quack = new Quack;
+        // pb de policies à régler
+        // $this->authorize('create', $quack);
 
-        $this->authorize('create', $quack);
-
-        $quack->user_id = $user->id;
+        // j'accède aux propriétés de mon message et je leur donne des valeurs
+        $quack->user_id = $user->id; 
         $quack->content = $request->input('content');
-        $quack->image = $imageName;
+        $quack->image = isset($request['image']) ? uploadImage($request['image']) : null;
         $quack->tags = $request->input('tags');
+
+        // je sauvegarde en base de données
         $quack->save();
+
+        // *********** syntaxe 2 ******************
+        // Quack::create([
+        //     'user_id' => $user->id,
+        //     'content' => $request->input('content'),
+        //     'tags' => $request->input('tags'),
+        //     'image' => isset($data['image']) ? uploadImage($data['image']) : null
+        // ]);
 
         return redirect()->route('home')->with('message', 'Le quack a bien été sauvegardé');
     }
@@ -80,7 +88,7 @@ class QuackController extends Controller
 
     public function edit(Quack $quack)
     {
-        $this->authorize('update', $quack);
+        //$this->authorize('update', $quack);
 
         return view('quack.update', ['quack' => $quack]);
     }
@@ -96,20 +104,19 @@ class QuackController extends Controller
 
     public function update(Request $request, Quack $quack)
     {
-        $this->authorize('update', $quack);
+        //$this->authorize('update', $quack);
 
         $request->validate([
             'content' => 'required|min:5|max:500',
             'tags' => 'min:3|max:50',
         ]);
 
-        // $quack->content = $request->input('content');
-        // $quack->image = $request->input('image');
-        // $quack->tags = $request->input('tags');
+        $quack->content = $request->input('content');
+        $quack->image = isset($request['image']) ? uploadImage($request['image']) : $quack->image;
+        $quack->tags = $request->input('tags');
 
-        // $quack->save();
+        $quack->save();
 
-        $quack->update($request->all());
         return redirect()->route('home')->with('message', 'Le Quack a bien été modifié');
     }
 

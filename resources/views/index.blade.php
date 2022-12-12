@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content') 
+@section('content')
     <div class="container-fluid text-center">
         @if (session()->has('message'))
             <p class="alert alert-success">{{ session()->get('message') }}</p>
@@ -22,10 +22,10 @@
             <div class="col-6">
                 <a href="login"><button class="btn btn-lg px-5 btn-primary">Connexion</button></a>
             </div>
-             <div class="col-6">
+            <div class="col-6">
                 <a href="register"><button class="btn btn-lg px-5 btn-primary">Inscription</button></a>
+            </div>
         </div>
-    </div>
     </div>
 @endsection
 

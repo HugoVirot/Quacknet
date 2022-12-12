@@ -70,7 +70,7 @@
 
         <!--si user connecté : barre de recherche -->
         @auth
-        <form class="row mt-2 mr-2" action="{{ route('quacks.search') }}" method="get" role="search">
+        <form class="row mt-2 me-2" action="{{ route('quacks.search') }}" method="get" role="search">
             <div class="input-group">
                 <input type="search" class="form-control" name="q" id="recherche" placeholder="Rechercher un Quack">
                 <span class="input-group-btn">

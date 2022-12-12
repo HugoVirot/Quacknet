@@ -35,9 +35,12 @@ class HomeController extends Controller
         // ('comments' =  dans le modèle Quack, nom de la fonction qui spécifie la relation)
 
         // user et comments = eager loading  / comments.user = nested eager loading
-        $quacks = Quack::with('user', 'comments.user')->orderByDesc('created_at')->latest()->paginate(10);
-        return view('home', ['quacks' => $quacks]);
+        $quacks = Quack::with('comments.user')->latest()->paginate(10);
 
-        //return view('home', compact('quacks'));
+        // on retourne une vue en y injectant les données
+        return view('home', compact('quacks'));
+
+        // autre écriture
+        //return view('home', ['quacks' => $quacks]);
     }
 }

@@ -17,11 +17,11 @@ class CreateQuacksTable extends Migration
         Schema::create('quacks', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->unsignedBigInteger('user_id');
             $table->string('image')->nullable();
             $table->string('tags');
             $table->timestamps();
             
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

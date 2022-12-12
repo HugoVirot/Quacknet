@@ -24,18 +24,6 @@ Mon compte
     @endif
     <div class="row">
         <div class="col-6">
-            <p>Prénom : </p>
-        </div>
-        <div class="col-6"><b>{{ $user->prenom }}</b></div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <p>Nom : </p>
-        </div>
-        <div class="col-6"><b>{{ $user->nom }}</b></div>
-    </div>
-    <div class="row">
-        <div class="col-6">
             <p>pseudo : </p>
         </div>
         <div class="col-6"><b>{{ $user->pseudo }}</b></div>

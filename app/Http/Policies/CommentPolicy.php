@@ -4,7 +4,8 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Comment;
 
 class CommentPolicy
 {
@@ -23,7 +24,7 @@ class CommentPolicy
      * @param  \app\Models\User  $user
      * @return mixed
      */
-    public function create()
+    public function create(User $user)
     {
         // = return Auth::user();
         if (Auth::user())

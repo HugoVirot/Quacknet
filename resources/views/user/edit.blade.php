@@ -9,51 +9,23 @@
         <h3 class="pb-3">Une petite modif ? C'est par ici ! </h3>
         <div class="row">
 
-            <form class="col-4 mx-auto" action="{{ route('user.account.update') }}" method="POST">
+            <form class="col-4 mx-auto" action="{{ route('user.account.update') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="prenom">Nouveau prénom</label>
-                    <input required type="text" class="form-control" placeholder="modifier" name="prenom"
-                        value="{{ $user->prenom }}" id="prenom">
+                    <label for="pseudo">Nouveau pseudo</label>
+                    <input required type="text" class="form-control" placeholder="modifier" name="pseudo"
+                        value="{{ $user->pseudo }}" id="pseudo">
                 </div>
 
                 <div class="form-group">
-                    <label for="nom">Nouveau nom</label>
-                    <input required type="text" class="form-control" name="nom" value="{{ $user->nom }}" id="nom">
-                </div>
-
-                <div class="form-group">
-                    <label for="image">Nouvelle image (upload ci-dessous)</label>
-                    @if (Session::get('image'))
-                        <input type="text" class="form-control" name="image" id="image"
-                            value="{{ Session::get('image') }}">
-                    @else
-                        <input type="text" class="form-control" name="image" id="image"
-                            placeholder="upload d'images ci-dessous">
-                    @endif
+                    <label for="image">Nouvelle image</label>
+                    <input type="file" class="form-control" name="image" id="image">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Valider</button>
             </form>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mx-auto">
-                <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row justify-content-center">
-                        <p class="mt-3">Uploader une image</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <input type="file" name="image" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-success">Upload</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
         </div>
 
         <h3 class="pb-3 mt-5">Et pour le mot de passe (ultra secret), c'est là ! </h3>

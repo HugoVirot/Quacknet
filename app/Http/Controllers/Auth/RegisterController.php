@@ -73,6 +73,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        // ****************** nouvelle syntaxe (à privilégier) ******************
+
+        return User::create([
+            'pseudo' => $data['pseudo'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'image' => isset($data['image']) ? uploadImage($data['image']) : null
+        ]);
+
+        // ****************** ancienne syntaxe ******************
+
         // $user = new User();
 
         // $user->prenom = $data['prenom'];
@@ -80,26 +92,9 @@ class RegisterController extends Controller
         // $user->pseudo = $data['pseudo'];
         // $user->email = $data['email'];
         // $user->prenom = $data['prenom'];
+        // $user->image = isset($data['image']) ? uploadImage($data['image']) : null;
         // $user->password = Hash::make($data['password']);
 
-        // if ($data['image']) {
-        //     Validator::make($data, [
-        //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        //     ]);
-
-        //     $imageName = time() . '.' . $data['image']->extension();
-
-        //     $data['image']->move(public_path('images'), $imageName);
-        //     $user->image = $imageName;
-        // }
-
         // $user->save();
-
-        return User::create([
-            'pseudo' => $data['pseudo'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'image' => uploadImage($data['image'])
-        ]);
     }
 }

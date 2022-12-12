@@ -23,7 +23,7 @@
                         </h5>
                     </div>
                     <div class="col m-auto">
-                        <h4>#{{ $quack->tags }} </h4>
+                        <h4>#{{ implode(" #", explode(" ", $quack->tags)) }} </h4>
                     </div>                    <div class="col m-auto">
                         <div class="row">posté {{ $quack->created_at->diffForHumans() }}</div>
                         @if ($quack->created_at != $quack->updated_at)
@@ -100,6 +100,8 @@
         <button type="submit" class="btn btn-warning">Valider</button>
     </form>
     </div>
+
+
     @foreach ($quack->comments as $comment)
         <div class="container w-50">
             <div class="card mb-2">
@@ -107,7 +109,7 @@
                     <div class="row">
                         <div class="col">{{ $comment->user->pseudo }}</div>
                         @if ($comment->tags)
-                            <div class="col">#{{ $comment->tags }}</div>
+                            <div class="col">#{{ implode(" #", explode(" ", $comment->tags)) }} </div>
                         @endif
                         <div class="col m-auto">
                             <div class="row">posté {{ $quack->created_at->diffForHumans() }}</div>

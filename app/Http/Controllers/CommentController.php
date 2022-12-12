@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Comment;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 
@@ -39,12 +39,14 @@ class CommentController extends Controller
 
         $comment = new Comment;
 
+        // on vérifie si l'utilisateur a le droit de créer le commentaire
+        // grâce à la policy correspondante
         $this->authorize('create', $comment);
 
         $comment->user_id = $user->id;
         $comment->quack_id = $request->input('quack_id');
         $comment->content = $request->input('content');
-        $comment->image = $request->input('image');
+        $comment->image = isset($request['image']) ? uploadImage($request['image']) : null;
         $comment->tags = $request->input('tags');
         $comment->save();
 
@@ -84,7 +86,7 @@ class CommentController extends Controller
         ]);
 
         $comment->content = $request->input('content');
-        $comment->image = $request->input('image');
+        $comment->image = isset($request['image']) ? uploadImage($request['image']) : $comment->image;
         $comment->tags = $request->input('tags');
         $comment->save();
         return redirect()->route('home')->with('message', 'Le commentaire a bien été modifié');

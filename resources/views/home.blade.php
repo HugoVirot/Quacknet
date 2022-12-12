@@ -8,7 +8,6 @@
     <div class="container mb-3">
         <div class="row justify-content-center">
             <div class="col-md-10">
-
                 @if ($message = Session::get('success'))
                     <div class="container">
                         <div class="alert alert-success">
@@ -103,7 +102,7 @@
                             </h5>
                         </div>
                         <div class="col m-auto">
-                            <h4>#{{ $quack->tags }} </h4>
+                            <h4>#{{ implode(' #', explode(' ', $quack->tags)) }} </h4>
                         </div>
                         <div class="col m-auto">
                             <div class="row">posté {{ $quack->created_at->diffForHumans() }}</div>
@@ -128,14 +127,14 @@
                                 onclick="document.getElementById('formulairecommentaire{{ $quack->id }}').style.display = 'block'">Commenter
                             </a>
                         </div>
-                        @if (Auth::user()->can('update', $quack))
+                        {{-- @if (Auth::user()->can('update', $quack)) --}}
                             <div class="col">
                                 <!--si l'utilisateur connecté a posté le quack, il peut le modifier et le supprimer-->
                                 <a href="{{ route('quacks.edit', $quack) }}">
                                     <button class="btn btn-secondary">Modifier</button>
                                 </a>
                             </div>
-                        @endif
+                        {{-- @endif --}}
                         @if (Auth::user()->can('delete', $quack))
                             <div class="col">
                                 <form action="{{ route('quacks.destroy', $quack) }}" method="post">
@@ -151,7 +150,8 @@
 
                 <!-- **********************************************AJOUTER UN COMMENTAIRE**********************************************-->
                 <div style="display:none" class="col p-3 mb-2" id="formulairecommentaire{{ $quack->id }}">
-                    <form class="w-50 m-auto" action="{{ route('comments.store') }}" method="POST">
+                    <form class="w-50 m-auto" action="{{ route('comments.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="content">Tape ton commentaire</label>
@@ -165,13 +165,8 @@
                             <div class="col-4"></div>
                             <div class="col-4 form-group">
                                 <label for="nom">image (facultatif)</label>
-                                @if (Session::get('image'))
-                                    <input type="text" class="form-control" name="image" id="image"
-                                        readonly="readonly" value="{{ Session::get('image') }}">
-                                @else
-                                    <input type="text" class="form-control" name="image" id="image"
-                                        readonly="readonly" placeholder="upload d'image ci-dessous">
-                                @endif
+                                <input type="file" class="form-control" name="image" id="image"
+                                    placeholder="upload d'image ci-dessous">
                             </div>
                             <input class="form-control" type="hidden" id="quack_id" name="quack_id"
                                 value="{{ $quack->id }}">
@@ -234,7 +229,7 @@
                         </div>
                         <div class="col m-auto">
                             @if ($comment->tags !== null)
-                                <h5>#{{ $comment->tags }} </h5>
+                                <h5>#{{ implode(' #', explode(' ', $comment->tags)) }} </h5>
                             @endif
                         </div>
                         <div class="col m-auto">

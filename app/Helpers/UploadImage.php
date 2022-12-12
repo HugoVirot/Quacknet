@@ -6,7 +6,6 @@
  * @param $request
  *
  */
-use Illuminate\Support\Facades\Validator;
 
 function uploadImage($image)
 {

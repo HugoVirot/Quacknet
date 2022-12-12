@@ -21,7 +21,7 @@ class QuackFactory extends Factory
             'content' => $this->faker->paragraph(),
             'user_id' => rand(1, User::count()),
             'image' => 'default_picture_' . rand(1,5) . '.jpg',
-            'tags' => $this->faker->words(3, true), // password
+            'tags' => $this->faker->words(3, true), 
         ];
     }
 }
